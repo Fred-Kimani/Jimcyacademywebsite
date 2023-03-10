@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- mobile metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <!-- site metas -->
+  <title>Jimcy Academy</title>
+
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- style css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Responsive-->
+  <link rel="stylesheet" href="/css/responsive.css">
+  <!-- fevicon -->
+  <link rel="icon" href="/public/images/fevicon.png" type="image/gif" />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+  <!-- Tweaks for older IEs-->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!-- owl stylesheets -->
+  <link rel="stylesheet" href="/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+    media="screen">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+  <!-- banner section start -->
+  <div class="banner_section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 padding_0">
+          <div id="main_slider" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+
+                
+
+                <div class="banner_taital_main">
+                  <a class="logo_main" href=""><img src="/images/logoacad.png" style="width:100px;height:100px;"></a>
+                  <ul class="banner_taital">
+                    <% about.forEach((row) => { %>
+                      <li><%= row.heading %></li>
+                    <% }); %>
+                  </ul>
+                  <ul class="long_text">
+                    <% about.forEach((row) => { %>
+                      <li><%= row.body %></li>
+                    <% }); %>
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="navigators">
+        <button class="navigators-button1"><a href="/about">Learn more</a></button>
+
+        <button class="navigators-button2"><a href="/contacts">Contact us</a></button>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  <!-- banner section end -->
+
+  <div class="copyright_section">
+    <div class="container">
+      <p class="copyright">2023 All Rights Reserved. Jimcy Academy</p>
+    </div>
+  </div>
+
+</body>
+
+</html>

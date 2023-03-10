@@ -1,0 +1,32 @@
+{
+  "name": "jimcyacad",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fred-Kimani/Jimcyacademywebsite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fred-Kimani/Jimcyacademywebsite/issues"
+  },
+  "homepage": "https://github.com/Fred-Kimani/Jimcyacademywebsite#readme",
+  "dependencies": {
+    "consolidate": "^0.16.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "kill-port": "^2.0.1",
+    "mysql": "^2.18.1",
+    "promise-mysql": "^5.2.0",
+    "swig": "^1.4.2"
+  }
+}

@@ -1,0 +1,12 @@
+runtime: nodejs
+network:
+  name: NETWORK_NAME
+  instance_ip_mode: INSTANCE_IP_MODE
+  instance_tag: TAG_NAME
+  subnetwork_name: SUBNETWORK_NAME
+  session_affinity: true
+  forwarded_ports:
+    - PORT
+    - HOST_PORT:CONTAINER_PORT
+    - PORT/tcp
+    - HOST_PORT:CONTAINER_PORT/udp
