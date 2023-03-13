@@ -40,7 +40,7 @@
 </head>
 <body>
     <div>
-        <form action="/updateabout/<%= card.id%>">
+        <form action="/updateabout/<%= card.id%>" method="post">
           <label for="heading">About Heading</label>
           <input type="text" id="heading" name="heading" placeholder="About Heading" value="<%= card.heading%>">
       

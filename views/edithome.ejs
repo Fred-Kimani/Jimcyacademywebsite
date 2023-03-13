@@ -41,15 +41,15 @@
 </head>
 <body>
     <div>
-        <form action="/updatehome/<%= about.id%>">
+        <form action="/updatehome/<%= about.id %>" method="post">
           <label for="heading">Heading</label>
-          <input type="text" id="heading" name="heading" placeholder="Heading" value="<%= about.heading%>">
+          <input type="text" id="heading" class="form-control" name="heading" placeholder="Heading" value="<%= about.heading %>">
       
-          <label for="lname">Body</label>
-          <input type="text" id="body" name="body" placeholder="Body" value="<%= about.body%>">
+          <label for="body">Body</label>
+          <input type="text" id="body" name="body" class="form-control" placeholder="Body" value="<%= about.body %>">
       
         
-          <input type="submit" value="Submit">
+          <input type="submit" class="btn btn-primary" value="Submit">
         </form>
       </div>
     

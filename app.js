@@ -82,11 +82,12 @@ app.get('/contacts', async(req, res)=>{
 app.get('/edithome/:id', async(req,res)=>{
   var id = req.params.id;
   const query =  "SELECT * FROM about WHERE id= ?"
-  connection.query(query,[id], (err, about) =>{
+  connection.query(query,[id], (err, results, fields) =>{
     if(err){
       throw err;
     }
-    res.render('edithome', {about})
+    const about = results[0];
+    res.render('edithome', {about:about})
   
   })
   
@@ -96,11 +97,12 @@ app.get('/editcontacts/:id', async(req,res)=>{
   var id = req.params.id;
   const query =  "SELECT * FROM ContactDetails WHERE id= ?"
 
-  connection.query(query, [id], (err, contact) =>{
+  connection.query(query, [id], (err, results, fields) =>{
     if(err){
       throw err;
     }
-    res.render('editcontacts', {contact})
+    const contact = results[0];
+    res.render('editcontacts', {contact:contact})
     
   })
 })
@@ -108,42 +110,49 @@ app.get('/editcontacts/:id', async(req,res)=>{
 app.get('/editabout/:id', async(req,res)=>{
   const query =  "SELECT * FROM informationCards WHERE id= ?"
   var id = req.params.id;
-  connection.query(query,[id], (err, card) =>{
+  connection.query(query,[id], (err, results, fields) =>{
     if(err){
       throw err;
     }
-    res.render('editabout', {card})
+    const card = results[0];
+    res.render('editabout', {card:card})
     
   })
 })
 
-app.post('updatehome/:id', async(req,res)=>{
+app.post('/updatehome/:id', async(req,res)=>{
+  const {heading, body} = req.body;
+  var id = req.params.id;
   const query= 'UPDATE about SET heading = ?, body=? WHERE id=?'
-  var id = req.params.id;
-  connection.query(query, [id], (error)=>{
-    res.redirect('home');
+  connection.query(query, [heading,body,id], (error,result)=>{
+    res.send('Updated!')
+    //res.redirect('home');
 
   })
 
 
 })
 
-app.post('updateabout/:id', async(req,res)=>{
+app.post('/updateabout/:id', async(req,res)=>{
+  const {heading, body} = req.body;
+  var id = req.params.id;
   const query = 'UPDATE informationCards SET heading = ?, body=? WHERE id=?'
-  var id = req.params.id;
-  connection.query(query, [id], (error)=>{
-    res.redirect('about');
+  connection.query(query, [heading,body,id], (error,result)=>{
+    //res.redirect('about');
+    res.send('Updated!')
 
   })
 
 
 })
 
-app.post('updatecontacts/:id', async(req,res)=>{
-  const query = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?'
+app.post('/updatecontacts/:id', async(req,res)=>{
+  const {details, preference} = req.body;
   var id = req.params.id;
-  connection.query(query, [id], (error)=>{
-    res.redirect('contacts');
+  const query = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?'
+  connection.query(query, [preference, details,id], (error,result)=>{
+    //res.redirect('contacts');
+    res.send('Updated!')
 
   })
 
