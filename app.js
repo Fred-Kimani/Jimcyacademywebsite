@@ -7,9 +7,8 @@ const mysql = require('promise-mysql');
 var cons = require('consolidate');
 const path = require('path');
 const ejs = require('ejs');
+const { query } = require('express');
 
-
-app.engine('html', cons.swig);
 
 app.use(express.static('public'));
 
@@ -33,7 +32,7 @@ async function connectToCloudSql() {
     database: process.env.DATABASE,
     host: process.env.HOST,
     port: process.env.DB_PORT,
-    connectTimeout: 60000000,
+    connectTimeout: 600000000,
   };
   const connection = await mysql.createConnection(config);
   return connection;
@@ -58,11 +57,11 @@ app.get('/', async(req, res)=>{
 
 app.get('/about', async(req, res)=>{
   const query =  "SELECT * FROM informationCards"
-  connection.query(query, (err, cards) =>{
+  connection.query(query, (err, card) =>{
     if(err){
       throw err;
     }
-    res.render('about', {cards})
+    res.render('about', {card})
   })
     
 
@@ -70,23 +69,86 @@ app.get('/about', async(req, res)=>{
 
 app.get('/contacts', async(req, res)=>{
   const query =  "SELECT * FROM ContactDetails"
-  connection.query(query, (err, contacts) =>{
+  connection.query(query, (err, contact) =>{
     if(err){
       throw err;
     }
-    res.render('contacts', {contacts})
+    res.render('contacts', {contact})
   })
     
 
 });
-// Adding the cards on the home page
+ 
+app.get('/edithome/:id', async(req,res)=>{
+  var id = req.params.id;
+  const query =  "SELECT * FROM about WHERE id= ?"
+  connection.query(query,[id], (err, about) =>{
+    if(err){
+      throw err;
+    }
+    res.render('edithome', {about})
+  
+  })
+  
+})
+
+app.get('/editcontacts/:id', async(req,res)=>{
+  var id = req.params.id;
+  const query =  "SELECT * FROM ContactDetails WHERE id= ?"
+
+  connection.query(query, [id], (err, contact) =>{
+    if(err){
+      throw err;
+    }
+    res.render('editcontacts', {contact})
+    
+  })
+})
+
+app.get('/editabout/:id', async(req,res)=>{
+  const query =  "SELECT * FROM informationCards WHERE id= ?"
+  var id = req.params.id;
+  connection.query(query,[id], (err, card) =>{
+    if(err){
+      throw err;
+    }
+    res.render('editabout', {card})
+    
+  })
+})
+
+app.post('updatehome/:id', async(req,res)=>{
+  const query= 'UPDATE about SET heading = ?, body=? WHERE id=?'
+  var id = req.params.id;
+  connection.query(query, [id], (error)=>{
+    res.redirect('home');
+
+  })
 
 
-// Getting the cards on the home page
+})
 
-// Editing the cards on the home page
+app.post('updateabout/:id', async(req,res)=>{
+  const query = 'UPDATE informationCards SET heading = ?, body=? WHERE id=?'
+  var id = req.params.id;
+  connection.query(query, [id], (error)=>{
+    res.redirect('about');
 
-// Deleting the cards on the home page
+  })
+
+
+})
+
+app.post('updatecontacts/:id', async(req,res)=>{
+  const query = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?'
+  var id = req.params.id;
+  connection.query(query, [id], (error)=>{
+    res.redirect('contacts');
+
+  })
+
+
+})
 
 }).catch((err) => {
   console.error('Failed to connect to Cloud SQL: ' + err.message);
