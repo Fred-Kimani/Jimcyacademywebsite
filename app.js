@@ -8,8 +8,10 @@ var cons = require('consolidate');
 const path = require('path');
 const ejs = require('ejs');
 const { query } = require('express');
+const multer = require('multer');
+const fs = require('fs');
 
-
+app.use(express.static('images'));
 app.use(express.static('public'));
 
 /*app.set('views', path.join(__dirname, 'public/html'));
@@ -40,6 +42,19 @@ async function connectToCloudSql() {
 
 connectToCloudSql().then((connection) => {
   console.log('Connected to Cloud SQL.');
+
+
+  var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "./images");
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    },
+  });
+  var upload = multer({
+    storage: storage,
+  }).single("image");
 
 
 // Home page
@@ -79,7 +94,7 @@ app.get('/contacts', async(req, res)=>{
 
 });
  
-app.get('/edithome/:id', async(req,res)=>{
+app.get('/edithome/:id', upload,async(req,res)=>{
   var id = req.params.id;
   const query =  "SELECT * FROM about WHERE id= ?"
   connection.query(query,[id], (err, results, fields) =>{
@@ -107,7 +122,7 @@ app.get('/editcontacts/:id', async(req,res)=>{
   })
 })
 
-app.get('/editabout/:id', async(req,res)=>{
+app.get('/editabout/:id' , upload,  async(req,res)=>{
   const query =  "SELECT * FROM informationCards WHERE id= ?"
   var id = req.params.id;
   connection.query(query,[id], (err, results, fields) =>{
@@ -120,12 +135,30 @@ app.get('/editabout/:id', async(req,res)=>{
   })
 })
 
-app.post('/updatehome/:id', async(req,res)=>{
+app.post('/updatehome/:id',upload, async(req,res)=>{
   const {heading, body} = req.body;
+  let new_image = "";
   var id = req.params.id;
-  const query= 'UPDATE about SET heading = ?, body=? WHERE id=?'
-  connection.query(query, [heading,body,id], (error,result)=>{
-    res.send('Updated!')
+    //if a new file is selected on the filepicker..
+    if (req.file) {
+      //the variable is assigned to the selected image
+      new_image = req.file.filename;
+
+      if(req.body.old_image){
+        try {
+          //removing the previous image
+          fs.unlinkSync("./images/" + req.body.old_image);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    } else {
+      //same old image variable assigned to new image variable if image is not updated
+      new_image = req.body.image;
+    }
+  const query= 'UPDATE about SET heading = ?, body=?, image=? WHERE id=?'
+  connection.query(query, [heading,body,new_image,id], (error,result)=>{
+    res.redirect('/');
     //res.redirect('home');
 
   })
@@ -133,14 +166,32 @@ app.post('/updatehome/:id', async(req,res)=>{
 
 })
 
-app.post('/updateabout/:id', async(req,res)=>{
+app.post('/updateabout/:id', upload, async(req,res)=>{
   const {heading, body} = req.body;
+  let new_image = "";
   var id = req.params.id;
-  const query = 'UPDATE informationCards SET heading = ?, body=? WHERE id=?'
-  connection.query(query, [heading,body,id], (error,result)=>{
-    //res.redirect('about');
-    res.send('Updated!')
 
+    //if a new file is selected on the filepicker..
+    if (req.file) {
+      //the variable is assigned to the selected image
+      new_image = req.file.filename;
+      if(req.body.old_image){
+        try {
+          //removing the previous image
+          fs.unlinkSync("./images/" + req.body.old_image);
+        } catch (err) {
+          console.log(err);
+        }
+
+      }
+    } else {
+      //same old image variable assigned to new image variable if image is not updated
+      new_image = req.body.image;
+    }
+  const query = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?'
+  connection.query(query, [heading,body,new_image,id], (error,result)=>{
+    //res.redirect('about');
+    res.redirect('/about');
   })
 
 
@@ -151,9 +202,25 @@ app.post('/updatecontacts/:id', async(req,res)=>{
   var id = req.params.id;
   const query = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?'
   connection.query(query, [preference, details,id], (error,result)=>{
-    //res.redirect('contacts');
-    res.send('Updated!')
+    res.redirect('/contacts');
+  })
 
+
+});
+
+app.get('/add-about', async(req,res)=>{
+  res.render('addinfocard')
+
+});
+
+app.post('/addabout', async(req,res)=>{
+  const heading = req.body.heading;
+  const image = req.file.filename;
+  const body = req.body.body;
+  const query = 'INSERT INTO  informationCards (heading, body, image) VALUES (?,?,?)';
+  connection.query(query, [heading,body,image], (error,result,fields)=>{
+    //res.redirect('about');
+    res.redirect('/about');
   })
 
 

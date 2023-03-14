@@ -40,12 +40,23 @@
 </head>
 <body>
     <div>
-        <form action="/updateabout/<%= card.id%>" method="post">
+        <form action="/updateabout/<%= card.id%>" method="post" enctype="multipart/form-data">
           <label for="heading">About Heading</label>
           <input type="text" id="heading" name="heading" placeholder="About Heading" value="<%= card.heading%>">
       
           <label for="lname">About Body</label>
           <input type="text" id="body" name="body" placeholder="About Body" value="<%= card.body%>">
+
+          <div class="form-group">
+            <label for="image">Change Image</label>
+            <input
+              type="file"
+              name="image"
+              class="form-control"/>
+             <img src="/<%= card.image %>"
+              width="100" class="img-thumbnail mt-1"
+            />
+          </div>
       
         
           <input type="submit" value="Submit">

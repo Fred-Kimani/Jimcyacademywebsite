@@ -41,12 +41,24 @@
 </head>
 <body>
     <div>
-        <form action="/updatehome/<%= about.id %>" method="post">
+        <form action="/updatehome/<%= about.id %>" method="post" enctype="multipart/form-data">
           <label for="heading">Heading</label>
           <input type="text" id="heading" class="form-control" name="heading" placeholder="Heading" value="<%= about.heading %>">
       
           <label for="body">Body</label>
           <input type="text" id="body" name="body" class="form-control" placeholder="Body" value="<%= about.body %>">
+
+
+          <div class="form-group">
+            <label for="image">Change Image</label>
+            <input
+              type="file"
+              name="image"
+              class="form-control"/>
+             <img src="/<%= about.image %>"
+              width="100" class="img-thumbnail mt-1"
+            />
+          </div>
       
         
           <input type="submit" class="btn btn-primary" value="Submit">

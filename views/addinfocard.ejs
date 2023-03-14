@@ -3,11 +3,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add an Information card</title>
+
+    <style>
+        input[type=text], select {
+          width: 100%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+        }
+        
+        input[type=submit] {
+          width: 100%;
+          background-color: #4CAF50;
+          color: white;
+          padding: 14px 20px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        
+        input[type=submit]:hover {
+          background-color: #45a049;
+        }
+        
+        div {
+          border-radius: 5px;
+          background-color: #f2f2f2;
+          padding: 20px;
+        }
+        </style>
+    <title>Add Some More Information About your School</title>
 </head>
 <body>
-    <h1>This will appear on your School's About Page</h1>
-    
+    <div>
+        <form action="/addabout" method="post" enctype="multipart/form-data">
+          <label for="heading">Heading</label>
+          <input type="text" id="heading" name="heading" placeholder="About Heading" value="">
+      
+          <label for="lname">Body</label>
+          <input type="text" id="body" name="body" placeholder="About Body" value="">
+      
+        
+          <div class="form-group">
+            <label for="image">Add Profile Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              class="form-control"
+              value="<%= typeof image != 'undefined' ? image : '' %>"
+            />
+          </div>
+          <input type="submit" value="Submit">
+        </form>
+      </div>
     
 </body>
 </html>
