@@ -175,6 +175,7 @@ app.post('/updateabout/:id', upload, async(req,res)=>{
     if (req.file) {
       //the variable is assigned to the selected image
       new_image = req.file.filename;
+
       if(req.body.old_image){
         try {
           //removing the previous image
@@ -208,12 +209,21 @@ app.post('/updatecontacts/:id', async(req,res)=>{
 
 });
 
+app.post('/deleteabout/:id', async(req,res)=>{
+  var id = req.params.id;
+  const query = 'DELETE FROM informationCards WHERE id=?;'
+  connection.query(query, [id], (error,result)=>{
+    res.redirect('/about');
+  })
+
+});
+
 app.get('/add-about', async(req,res)=>{
   res.render('addinfocard')
 
 });
 
-app.post('/addabout', async(req,res)=>{
+app.post('/addabout', upload, async(req,res)=>{
   const heading = req.body.heading;
   const image = req.file.filename;
   const body = req.body.body;
