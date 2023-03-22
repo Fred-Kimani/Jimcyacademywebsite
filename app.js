@@ -7,9 +7,9 @@ const mysql = require('promise-mysql');
 var cons = require('consolidate');
 const path = require('path');
 const ejs = require('ejs');
-const { query } = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const query = require('./config/database');
 
 app.use(express.static('images'));
 app.use(express.static('public'));
@@ -27,21 +27,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 
-async function connectToCloudSql() {
-  const config = {
-    user: process.env.USERNAME,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    host: process.env.HOST,
-    port: process.env.DB_PORT,
-    connectTimeout: 600000000,
-  };
-  const connection = await mysql.createConnection(config);
-  return connection;
-}
-
-connectToCloudSql().then((connection) => {
-  console.log('Connected to Cloud SQL.');
 
 
   var storage = multer.diskStorage({
@@ -58,123 +43,133 @@ connectToCloudSql().then((connection) => {
 
 
 // Home page
-app.get('/', async(req, res)=>{
-  const query =  "SELECT * FROM about"
-  connection.query(query, (err, about) =>{
-    if(err){
-      throw err;
-    }
-    res.render('home', {about})
-  })
-    
+app.get('/', async (req, res) => {
+  try {
+    const querys = 'SELECT * FROM about';
+    const [about ]= await query(querys);
+    res.render('home', { about:about });
 
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 app.get('/about', async(req, res)=>{
-  const query =  "SELECT * FROM informationCards"
-  connection.query(query, (err, card) =>{
-    if(err){
-      throw err;
-    }
-    res.render('about', {card})
-  })
-    
 
+  try{
+    const querys =  "SELECT * FROM informationCards";
+    const card = await query(querys);
+    res.render('about', {card})
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+
+  }
 });
 
 app.get('/contacts', async(req, res)=>{
-  const query =  "SELECT * FROM ContactDetails"
-  connection.query(query, (err, contact) =>{
-    if(err){
-      throw err;
-    }
-    res.render('contacts', {contact})
-  })
-    
 
+  try{
+    const querys =  "SELECT * FROM ContactDetails"
+    const contact = await query(querys);
+    res.render('contacts', {contact})
+  }
+  catch (err) {
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+
+  }
 });
  
-app.get('/edithome/:id', upload,async(req,res)=>{
+app.get('/edithome/:id', upload,async(req,res,next)=>{
   var id = req.params.id;
-  const query =  "SELECT * FROM about WHERE id= ?"
-  connection.query(query,[id], (err, results, fields) =>{
-    if(err){
-      throw err;
-    }
-    const about = results[0];
+  try{
+    const querys =  "SELECT * FROM about WHERE id= ?"
+    const [about]= await query(querys, [id]);
     res.render('edithome', {about:about})
+
+  } catch (err){
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+  }
   
-  })
-  
-})
+});
 
 app.get('/editcontacts/:id', async(req,res)=>{
   var id = req.params.id;
-  const query =  "SELECT * FROM ContactDetails WHERE id= ?"
 
-  connection.query(query, [id], (err, results, fields) =>{
-    if(err){
-      throw err;
-    }
-    const contact = results[0];
+  try{
+    const querys = "SELECT * FROM ContactDetails WHERE id= ?"
+    const [contact] = await query(querys, [id]);
     res.render('editcontacts', {contact:contact})
-    
-  })
+
+
+  } catch (err){
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+
+  }
 })
 
 app.get('/editabout/:id' , upload,  async(req,res)=>{
-  const query =  "SELECT * FROM informationCards WHERE id= ?"
-  var id = req.params.id;
-  connection.query(query,[id], (err, results, fields) =>{
-    if(err){
-      throw err;
-    }
-    const card = results[0];
+  try{
+    var id = req.params.id;
+    const querys =  "SELECT * FROM informationCards WHERE id= ?";
+    const [card] = await query(querys, [id]);
     res.render('editabout', {card:card})
     
-  })
+
+  } catch (err){
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+  }
+
 })
 
-app.post('/updatehome/:id',upload, async(req,res)=>{
-  const {heading, body} = req.body;
-  let new_image = "";
-  var id = req.params.id;
-    //if a new file is selected on the filepicker..
-    if (req.file) {
-      //the variable is assigned to the selected image
-      new_image = req.file.filename;
+app.post('/updatehome/:id', upload, async(req, res) => {
+  const { heading, body } = req.body;
+  const id = req.params.id;
+  let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
 
-      if(req.body.old_image){
-        try {
-          //removing the previous image
-          fs.unlinkSync("./images/" + req.body.old_image);
-        } catch (err) {
-          console.log(err);
-        }
+  // If a new file is selected on the filepicker..
+  if (req.file) {
+    // The variable is assigned to the selected image
+    newImage = req.file.filename;
+
+    if (req.body.old_image) {
+      try {
+        // Removing the previous image
+        fs.unlinkSync("./images/" + req.body.old_image);
+      } catch (err) {
+        console.log(err);
       }
-    } else {
-      //same old image variable assigned to new image variable if image is not updated
-      new_image = req.body.image;
     }
-  const query= 'UPDATE about SET heading = ?, body=?, image=? WHERE id=?'
-  connection.query(query, [heading,body,new_image,id], (error,result)=>{
+  }
+
+  try {
+    const querys = 'UPDATE about SET heading=?, body=?, image=? WHERE id=?';
+    await query(querys, [heading, body, newImage, id]);
     res.redirect('/');
-    //res.redirect('home');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
-  })
 
 
-})
 
 app.post('/updateabout/:id', upload, async(req,res)=>{
   const {heading, body} = req.body;
-  let new_image = "";
-  var id = req.params.id;
+  const id = req.params.id;
+  let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
 
     //if a new file is selected on the filepicker..
     if (req.file) {
       //the variable is assigned to the selected image
-      new_image = req.file.filename;
+      newImage = req.file.filename;
 
       if(req.body.old_image){
         try {
@@ -189,33 +184,46 @@ app.post('/updateabout/:id', upload, async(req,res)=>{
       //same old image variable assigned to new image variable if image is not updated
       new_image = req.body.image;
     }
-  const query = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?'
-  connection.query(query, [heading,body,new_image,id], (error,result)=>{
-    //res.redirect('about');
-    res.redirect('/about');
-  })
 
+    try{
+      const querys = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?';
+      await query(querys, [heading,body,newImage,id]);
+      res.redirect('/about');
 
-})
+    } catch(err){
+      console.log(err)
+      res.status(500).send('Internal Server Error');
+
+    }
+});
 
 app.post('/updatecontacts/:id', async(req,res)=>{
   const {details, preference} = req.body;
   var id = req.params.id;
-  const query = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?'
-  connection.query(query, [preference, details,id], (error,result)=>{
+
+  try{
+    const querys = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?';
+    await query(querys, [preference, details,id]);
     res.redirect('/contacts');
-  })
 
-
+  } catch(err){
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-app.post('/deleteabout/:id', async(req,res)=>{
+app.delete('/deleteabout/:id', async(req,res)=>{
   var id = req.params.id;
-  const query = 'DELETE FROM informationCards WHERE id=?;'
-  connection.query(query, [id], (error,result)=>{
-    res.redirect('/about');
-  })
 
+  try{
+    const querys = 'DELETE FROM informationCards WHERE id=?';
+    await query(querys, [id]);
+
+
+  } catch(err){
+    console.log(err)
+    res.status(500).send('Internal Server Error'); 
+  }
 });
 
 app.get('/add-about', async(req,res)=>{
@@ -227,17 +235,23 @@ app.post('/addabout', upload, async(req,res)=>{
   const heading = req.body.heading;
   const image = req.file.filename;
   const body = req.body.body;
-  const query = 'INSERT INTO  informationCards (heading, body, image) VALUES (?,?,?)';
-  connection.query(query, [heading,body,image], (error,result,fields)=>{
-    //res.redirect('about');
+
+  try{
+    const querys = 'INSERT INTO  informationCards (heading, body, image) VALUES (?,?,?)';
+    await query(querys, [heading,body,image])
+
     res.redirect('/about');
-  })
 
 
+  } catch(err){
+    console.log(err)
+    res.status(500).send('Internal Server Error');
+  }
 })
 
-}).catch((err) => {
-  console.error('Failed to connect to Cloud SQL: ' + err.message);
+app.get('/register', async(req,res)=>{
+  res.render('register')
+
 });
 
 

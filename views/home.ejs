@@ -10,6 +10,7 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <!-- site metas -->
   <title>Jimcy Academy</title>
+  <link rel="icon" href="/images/logoacad.png">
 
   <meta name="keywords" content="">
   <meta name="description" content="">
@@ -42,7 +43,7 @@
     width: 100%;
     height: 800px;
     float: left;
-    background-image: url('/<%= about[0].image %>');
+    background-image: url('/<%= about.image %>');
     background-size: 100%;
     background-repeat: no-repeat;">
     <div class="container-fluid">
@@ -57,15 +58,15 @@
                 <div class="banner_taital_main">
                   <a class="logo_main" href=""><img src="/images/logoacad.png" style="width:100px;height:100px;"></a>
                   <ul class="banner_taital">
-                    <% about.forEach((row) => { %>
-                      <a class="fa fa-edit" style="font-size:24px" href="/edithome/<%=row.id%>"></a>
-                      <li><%= row.heading %></li>
-                    <% }); %>
+                   
+                      <a class="fa fa-edit" style="font-size:24px" href="/edithome/<%=about.id%>"></a>
+                      <li><%= about.heading %></li>
+                    
                   </ul>
                   <ul class="long_text">
-                    <% about.forEach((row) => { %>
-                      <li><%= row.body %></li>
-                    <% }); %>
+                    
+                      <li><%= about.body %></li>
+                   
                   </ul>
                 </div>
 
