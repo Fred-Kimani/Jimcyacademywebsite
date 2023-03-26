@@ -15,6 +15,8 @@ const session = require('express-session');
 const initializePassport = require("./config/passport");
 const flash = require('connect-flash') 
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 
 
@@ -24,6 +26,11 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
+app.use((req, res, next) => {
+  res.locals.googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -82,6 +89,20 @@ app.use(express.urlencoded({extended: false}));
 
  });
 
+ function generateRandomPassword() {
+  const passwordLength = 12;
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
+  let password = '';
+
+  for (let i = 0; i < passwordLength; i++) {
+    password += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return password;
+}
+
+
+
  // Login
 app.post("/login", (req, res, next) => {
   passport.authenticate("user-local", (err, user, info) => {
@@ -96,76 +117,92 @@ app.post("/login", (req, res, next) => {
 });
 
  //register
- app.get("/register", forwardAuthenticated, (req, res) =>{
+
+
+
+
+app.get('/users',ensureAuthenticated, async(req,res)=>{
+  res.render('createuser');
+});
+
+app.post('/users', ensureAuthenticated, async(req, res) => {
   let errors = [];
-  let message = [];
- 
-  res.render("register", {errors, message})
- }
-);
 
+  const newUser = {
+    username: req.body.username,
+  };
 
-app.post("/register", async (req, res) => {
-  const { username, password, confirm_password } = req.body;
-  let errors = [];
-  let message = [];
-
-  if (!username  || !password || !confirm_password) {
-    errors.push({ msg: "Please enter all fields" });
+  if (!req.body.username) {
+    errors.push({ msg: "Please enter a username" });
   }
+  // Generate a random password for the new user
+  const newPassword = generateRandomPassword();
 
-  if (password != confirm_password) {
-    errors.push({ msg: "Passwords do not match" });
-  }
+  // Save the new user and their password to your database
 
-  if (password.length < 6) {
-    errors.push({ msg: "Password must be at least 6 characters" });
-  }
-
-  if (errors.length > 0) {
-    res.render("register", {
-      errors,
-      message,
-      username,
-      password,
-      confirm_password,
-    });
-  } else {
-    const name = username;
+   
+    const name = req.body.username;
     const querys = 'SELECT * FROM users WHERE username = ?';
     try {
       const [result] = await query(querys, [name]);
-      if (result && result.length > 0) {
+      if (result && result.username === name) {
         errors.push({ msg: "Username already exists" });
-        res.render("register", {
+        res.render("createuser", {
           errors,
           message,
           username,
-          password,
-          confirm_password,
         });
       } else {
-        const hash = await bcrypt.hash(password, 10);
-        const insertQuery = "INSERT INTO users (username, password) VALUES (?, ?)";
-        await query(insertQuery, [username, hash]);
-        req.flash("success_msg", "You are now registered and can log in");
-        res.redirect("/login");
+        const querys = 'INSERT INTO users (username, password) VALUES (?, ?)';
+        const hash = await bcrypt.hash(newPassword, 10);
+
+        await query(querys, [newUser.username, hash])
+          .then(async (result) => {
+            console.log('New user created successfully');
+            const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+              }
+            });
+            const mailOptions = {
+              from: process.env.EMAIL,
+              to: req.body.username,
+              subject: 'Your new account credentials',
+              text: `Your username is ${newUser.username} and your password is ${newPassword}. Please keep these credentials safe and do not share them with anyone.`
+            };
+      
+            await transporter.sendMail(mailOptions);
+            console.log('Email sent to new user with credentials');
+      
+            res.status(201).redirect('/adminhome');
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Internal server error');
+          });
       }
     } catch (err) {
       console.log(err);
-      res.redirect("/register");
+      res.redirect("/users");
     }
-  }
+  
+
+
 });
-
-
+/////////////// Admin routes
 
 // Home page
 app.get('/adminhome',ensureAuthenticated, async (req, res) => {
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   try {
     const querys = 'SELECT * FROM about';
+    const locationDetails = 'SELECT location FROM schoolDetails';
+    const [location ]= await query(locationDetails);
     const [about ]= await query(querys);
-    res.render('home', { about:about });
+    res.locals.googleMapsApiKey = googleMapsApiKey;
+    res.render('home', { about:about, location: location.location  });
 
   } catch (err) {
     console.error(err);
@@ -174,11 +211,14 @@ app.get('/adminhome',ensureAuthenticated, async (req, res) => {
 });
 
 app.get('/adminabout',ensureAuthenticated, async(req, res)=>{
-
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   try{
+    const locationDetails = 'SELECT location FROM schoolDetails';
+    const [location ]= await query(locationDetails);
     const querys =  "SELECT * FROM informationCards";
     const card = await query(querys);
-    res.render('about', {card})
+    res.locals.googleMapsApiKey = googleMapsApiKey;
+    res.render('about', {card, location: location.location })
   }
   catch (err) {
     console.log(err)
@@ -188,11 +228,15 @@ app.get('/adminabout',ensureAuthenticated, async(req, res)=>{
 });
 
 app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
-
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  res.locals.googleMapsApiKey = googleMapsApiKey;
   try{
+    const locationDetails = 'SELECT location FROM schoolDetails';
+    const [location ]= await query(locationDetails);
     const querys =  "SELECT * FROM ContactDetails"
     const contact = await query(querys);
-    res.render('contacts', {contact})
+    res.locals.googleMapsApiKey = googleMapsApiKey;
+    res.render('contacts', {contact, location: location.location })
   }
   catch (err) {
     console.log(err)
@@ -200,6 +244,80 @@ app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
 
   }
 });
+//////////end of admin routes
+
+// Load the Google Maps JavaScript API
+function initMap() {
+  const map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: -1.2921, lng: 36.8219 }, // Nairobi, Kenya
+    zoom: 8,
+  });
+
+  // Add a search box to the map
+  const searchBox = new google.maps.places.SearchBox(
+    document.getElementById("location-input")
+  );
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(
+    document.getElementById("location-input")
+  );
+  map.addListener("bounds_changed", () => {
+    searchBox.setBounds(map.getBounds());
+  });
+  let markers = [];
+  searchBox.addListener("places_changed", () => {
+    const places = searchBox.getPlaces();
+    if (places.length == 0) {
+      return;
+    }
+    markers.forEach((marker) => {
+      marker.setMap(null);
+    });
+    markers = [];
+    const bounds = new google.maps.LatLngBounds();
+    places.forEach((place) => {
+      if (!place.geometry || !place.geometry.location) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+      const marker = new google.maps.Marker({
+        map,
+        title: place.name,
+        position: place.geometry.location,
+      });
+      markers.push(marker);
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+}
+
+// Render the edit-location form
+app.get('/edit-location',ensureAuthenticated, (req, res) => {
+  const location = 'Jimcy Academy, Nairobi, Kenya';
+  res.render('editlocation', {location});
+});
+
+
+// Handle the form submission
+app.post('/edit-location',ensureAuthenticated, async (req, res) => {
+  const { location } = req.body;
+  // Store the location in your database
+  try {
+    const querys = 'UPDATE school SET location = ? WHERE id = ?';
+    const result = await query(querys, [location, userId]);
+    res.redirect('/adminhome');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
  
 app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{
   var id = req.params.id;
@@ -384,12 +502,6 @@ app.post('/addabout', upload, ensureAuthenticated, async(req,res)=>{
   }
 })
 
-app.get('/register',forwardAuthenticated, async(req,res)=>{
-  let errors = [];
-  let message = [];
-  res.render('register', {errors, message})
-
-});
 
 
 
