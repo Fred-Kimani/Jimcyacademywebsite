@@ -41,8 +41,9 @@
     <div class="topnav">
         <img src="/images/logoacad.png" style="width:100px;height:90px;">
         <a href="/">Home</a>
-        <a href="/adminabout" >About</a>
+        <a href="/about" >About</a>
         <a class="active">Contacts</a>
+        <a href="/login">Login (Site admins only)</a>
     </div>
 
     <div class="services_section layout_padding padding_bottom_0">
@@ -54,7 +55,6 @@
             <% contact.forEach((row) => { %>
             <div class="col-lg-4">
               <div class="call_box">
-                <a class="fa fa-edit" style="font-size:24px" href="/editcontacts/<%= row.id %>""></a>
                 <div class="call_image"><img src="images/avatar.png" style="width:200px;height:220px;"></div>
                 <h2 class="emergency_text"><%= row.type %></h2>
                 <h1 class="call_text"><%= row.details %></h1>

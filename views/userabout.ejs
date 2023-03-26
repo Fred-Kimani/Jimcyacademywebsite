@@ -74,9 +74,10 @@
   <div class="topnav">
     <img src="/images/logoacad.png" style="width:100px;height:90px;">
     <a href="/">Home</a>
-    <a href="/adminabout" class="active">About</a>
-    <a href="/admincontacts">Contacts</a>
+    <a href="/about" class="active">About</a>
+    <a href="/contacts">Contacts</a>
     <a href="/add-about">Add Info</a>
+    <a href="/login">Login (Site admins only)</a>
   </div>
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -90,10 +91,7 @@
         <div class="carousel-item <%= i===0 ? 'active' : '' %>" style="background-image: url(<%=card[i].image%>);">
 
           <div class="carousel-caption">
-            <a class="fa fa-edit" style="font-size:24px; color: rgb(14, 219, 14);"
-              href="/editabout/<%=card[i].id%>"></a>
-            <button class="fa fa-trash" style="font-size:24px; color: red; "
-              onclick="deleteAbout(<%=card[i].id%>)"></button>
+              
             <h2>
               <%=card[i].heading%>
             </h2>

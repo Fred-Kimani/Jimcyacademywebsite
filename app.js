@@ -10,9 +10,43 @@ const ejs = require('ejs');
 const multer = require('multer');
 const fs = require('fs');
 const query = require('./config/database');
+const passport = require("passport");
+const session = require('express-session');
+const initializePassport = require("./config/passport");
+const flash = require('connect-flash') 
+const bcrypt = require('bcrypt');
+
+
+
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/', require('./routes/user.js'))
+
+// Configure Passport.js
+initializePassport(passport);
+
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  next();
+});
+
+
+
 
 app.use(express.static('images'));
 app.use(express.static('public'));
+const {ensureAuthenticated, forwardAuthenticated} = require('./config/auth')
 
 /*app.set('views', path.join(__dirname, 'public/html'));
 app.set('view engine', 'html');*/
@@ -41,9 +75,93 @@ app.use(express.urlencoded({extended: false}));
     storage: storage,
   }).single("image");
 
+  //Login
+ app.get("/login", forwardAuthenticated, (req, res) => {
+  let error = [];
+  res.render("login", {error})
+
+ });
+
+ // Login
+app.post("/login", (req, res, next) => {
+  passport.authenticate("user-local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.redirect("/login");
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.redirect("/adminhome");
+    });
+  })(req, res, next);
+});
+
+ //register
+ app.get("/register", forwardAuthenticated, (req, res) =>{
+  let errors = [];
+  let message = [];
+ 
+  res.render("register", {errors, message})
+ }
+);
+
+
+app.post("/register", async (req, res) => {
+  const { username, password, confirm_password } = req.body;
+  let errors = [];
+  let message = [];
+
+  if (!username  || !password || !confirm_password) {
+    errors.push({ msg: "Please enter all fields" });
+  }
+
+  if (password != confirm_password) {
+    errors.push({ msg: "Passwords do not match" });
+  }
+
+  if (password.length < 6) {
+    errors.push({ msg: "Password must be at least 6 characters" });
+  }
+
+  if (errors.length > 0) {
+    res.render("register", {
+      errors,
+      message,
+      username,
+      password,
+      confirm_password,
+    });
+  } else {
+    const name = username;
+    const querys = 'SELECT * FROM users WHERE username = ?';
+    try {
+      const [result] = await query(querys, [name]);
+      if (result && result.length > 0) {
+        errors.push({ msg: "Username already exists" });
+        res.render("register", {
+          errors,
+          message,
+          username,
+          password,
+          confirm_password,
+        });
+      } else {
+        const hash = await bcrypt.hash(password, 10);
+        const insertQuery = "INSERT INTO users (username, password) VALUES (?, ?)";
+        await query(insertQuery, [username, hash]);
+        req.flash("success_msg", "You are now registered and can log in");
+        res.redirect("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      res.redirect("/register");
+    }
+  }
+});
+
+
 
 // Home page
-app.get('/', async (req, res) => {
+app.get('/adminhome',ensureAuthenticated, async (req, res) => {
   try {
     const querys = 'SELECT * FROM about';
     const [about ]= await query(querys);
@@ -55,7 +173,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/about', async(req, res)=>{
+app.get('/adminabout',ensureAuthenticated, async(req, res)=>{
 
   try{
     const querys =  "SELECT * FROM informationCards";
@@ -69,7 +187,7 @@ app.get('/about', async(req, res)=>{
   }
 });
 
-app.get('/contacts', async(req, res)=>{
+app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
 
   try{
     const querys =  "SELECT * FROM ContactDetails"
@@ -83,7 +201,7 @@ app.get('/contacts', async(req, res)=>{
   }
 });
  
-app.get('/edithome/:id', upload,async(req,res,next)=>{
+app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{
   var id = req.params.id;
   try{
     const querys =  "SELECT * FROM about WHERE id= ?"
@@ -97,7 +215,7 @@ app.get('/edithome/:id', upload,async(req,res,next)=>{
   
 });
 
-app.get('/editcontacts/:id', async(req,res)=>{
+app.get('/editcontacts/:id', ensureAuthenticated, async(req,res)=>{
   var id = req.params.id;
 
   try{
@@ -113,7 +231,7 @@ app.get('/editcontacts/:id', async(req,res)=>{
   }
 })
 
-app.get('/editabout/:id' , upload,  async(req,res)=>{
+app.get('/editabout/:id' , upload, ensureAuthenticated, async(req,res)=>{
   try{
     var id = req.params.id;
     const querys =  "SELECT * FROM informationCards WHERE id= ?";
@@ -128,7 +246,7 @@ app.get('/editabout/:id' , upload,  async(req,res)=>{
 
 })
 
-app.post('/updatehome/:id', upload, async(req, res) => {
+app.post('/updatehome/:id', upload, ensureAuthenticated,  async(req, res) => {
   const { heading, body } = req.body;
   const id = req.params.id;
   let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
@@ -151,7 +269,11 @@ app.post('/updatehome/:id', upload, async(req, res) => {
   try {
     const querys = 'UPDATE about SET heading=?, body=?, image=? WHERE id=?';
     await query(querys, [heading, body, newImage, id]);
-    res.redirect('/');
+    req.session.message = {
+      type: "success",
+      message: "Home page updated successfully!",
+    };
+    res.redirect('/adminhome');
   } catch (err) {
     console.log(err);
     res.status(500).send('Internal Server Error');
@@ -161,7 +283,7 @@ app.post('/updatehome/:id', upload, async(req, res) => {
 
 
 
-app.post('/updateabout/:id', upload, async(req,res)=>{
+app.post('/updateabout/:id', upload, ensureAuthenticated, async(req,res)=>{
   const {heading, body} = req.body;
   const id = req.params.id;
   let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
@@ -182,13 +304,17 @@ app.post('/updateabout/:id', upload, async(req,res)=>{
       }
     } else {
       //same old image variable assigned to new image variable if image is not updated
-      new_image = req.body.image;
+      newImage = req.body.image;
     }
 
     try{
       const querys = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?';
       await query(querys, [heading,body,newImage,id]);
-      res.redirect('/about');
+      req.session.message = {
+        type: "success",
+        message: "Updated successfully!",
+      };
+      res.redirect('/adminabout');
 
     } catch(err){
       console.log(err)
@@ -197,14 +323,18 @@ app.post('/updateabout/:id', upload, async(req,res)=>{
     }
 });
 
-app.post('/updatecontacts/:id', async(req,res)=>{
+app.post('/updatecontacts/:id',ensureAuthenticated, async(req,res)=>{
   const {details, preference} = req.body;
   var id = req.params.id;
 
   try{
     const querys = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?';
     await query(querys, [preference, details,id]);
-    res.redirect('/contacts');
+    req.session.message = {
+      type: "success",
+      message: "Contact details updated successfully!",
+    };
+    res.redirect('/admincontacts');
 
   } catch(err){
     console.log(err)
@@ -212,26 +342,27 @@ app.post('/updatecontacts/:id', async(req,res)=>{
   }
 });
 
-app.delete('/deleteabout/:id', async(req,res)=>{
+app.delete('/deleteabout/:id',ensureAuthenticated, async (req, res) => {
   var id = req.params.id;
 
-  try{
+  try {
     const querys = 'DELETE FROM informationCards WHERE id=?';
     await query(querys, [id]);
-
-
-  } catch(err){
+    res.status(200).send('Successfully deleted item.');
+  } catch (err) {
     console.log(err)
-    res.status(500).send('Internal Server Error'); 
+    res.status(500).send('Internal Server Error');
   }
 });
 
-app.get('/add-about', async(req,res)=>{
+
+app.get('/add-about', ensureAuthenticated, async(req,res)=>{
+
   res.render('addinfocard')
 
 });
 
-app.post('/addabout', upload, async(req,res)=>{
+app.post('/addabout', upload, ensureAuthenticated, async(req,res)=>{
   const heading = req.body.heading;
   const image = req.file.filename;
   const body = req.body.body;
@@ -239,8 +370,12 @@ app.post('/addabout', upload, async(req,res)=>{
   try{
     const querys = 'INSERT INTO  informationCards (heading, body, image) VALUES (?,?,?)';
     await query(querys, [heading,body,image])
+    req.session.message = {
+      type: "success",
+      message: "Added successfully!",
+    };
 
-    res.redirect('/about');
+    res.redirect('/adminabout');
 
 
   } catch(err){
@@ -249,28 +384,13 @@ app.post('/addabout', upload, async(req,res)=>{
   }
 })
 
-app.get('/register', async(req,res)=>{
-  res.render('register')
+app.get('/register',forwardAuthenticated, async(req,res)=>{
+  let errors = [];
+  let message = [];
+  res.render('register', {errors, message})
 
 });
 
 
-//create
-app.post('/insert', (req, res)=>{
-});
-
-//read
-app.get('/getAll', async(req, res)=>{
-    console.log("This is a test get api....and it's working :-)");
-});
-
-
-
-
-
-//update
-
-
-//delete
 
 app.listen(process.env.PORT, ()=> console.log('Express app is running......'));
