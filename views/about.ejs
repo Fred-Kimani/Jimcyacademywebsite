@@ -67,17 +67,54 @@
     }
   </style>
 
+<style>
+  footer {
+display: flex;
+justify-content: center;
+background-color: #3688f4;
+color: white;
+padding: 20px;
+}
+
+.footer-column {
+flex-basis: 50%;
+text-align: center;
+}
+
+.footer-column h3 {
+margin-top: 0;
+}
+
+.footer-column a {
+display: block;
+color: white;
+text-decoration: none;
+margin-bottom: 10px;
+}
+
+.footer-column a.active {
+font-weight: bold;
+}
+
+.footer-column a:hover {
+text-decoration: underline;
+}
+
+</style>
+
 </head>
 
 <body>
 
   <div class="topnav">
     <img src="/images/logoacad.png" style="width:100px;height:90px;">
-    <a href="/">Home</a>
+    <a href="/adminhome">Home</a>
     <a href="/adminabout" class="active">About</a>
     <a href="/admincontacts">Contacts</a>
     <a href="/add-about">Add Info</a>
     <a href="/users">Add an admin</a>
+    <a href="/manage-users">Manage users</a>
+    <a href="/settings">Settings</a>
   </div>
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -130,6 +167,18 @@
   
   
     </div>
+
+    <footer>
+      <div class="footer-column">
+
+    <a href="/adminhome">Home</a>
+    <a href="/adminabout" class="active" >About</a>
+    <a href="/admincontacts">Contacts</a>
+    <a href="/users">Add an admin</a>
+    <a href="/manage-users">Manage users</a>
+    <a href="/settings">Settings</a>
+  </div>
+</footer>
 
 
   <div class="copyright_section">

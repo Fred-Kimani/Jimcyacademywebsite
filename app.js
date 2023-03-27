@@ -35,7 +35,8 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', require('./routes/user.js'))
+app.use('/', require('./routes/user.js'));
+app.use('/accountsettings', require('./routes/accountsettings'));
 
 // Configure Passport.js
 initializePassport(passport);
@@ -116,7 +117,21 @@ app.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
- //register
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      req.flash("success_msg", "You are logged out");
+      res.redirect("/login");
+    }
+  });
+});
+
+
+
 
 
 
@@ -187,10 +202,9 @@ app.post('/users', ensureAuthenticated, async(req, res) => {
       console.log(err);
       res.redirect("/users");
     }
-  
+  });
 
 
-});
 /////////////// Admin routes
 
 // Home page
@@ -244,79 +258,27 @@ app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
 
   }
 });
-//////////end of admin routes
 
-// Load the Google Maps JavaScript API
-function initMap() {
-  const map = new google.maps.Map(document.getElementById("map"), {
-    center: { lat: -1.2921, lng: 36.8219 }, // Nairobi, Kenya
-    zoom: 8,
-  });
-
-  // Add a search box to the map
-  const searchBox = new google.maps.places.SearchBox(
-    document.getElementById("location-input")
-  );
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(
-    document.getElementById("location-input")
-  );
-  map.addListener("bounds_changed", () => {
-    searchBox.setBounds(map.getBounds());
-  });
-  let markers = [];
-  searchBox.addListener("places_changed", () => {
-    const places = searchBox.getPlaces();
-    if (places.length == 0) {
-      return;
-    }
-    markers.forEach((marker) => {
-      marker.setMap(null);
-    });
-    markers = [];
-    const bounds = new google.maps.LatLngBounds();
-    places.forEach((place) => {
-      if (!place.geometry || !place.geometry.location) {
-        console.log("Returned place contains no geometry");
-        return;
-      }
-      const marker = new google.maps.Marker({
-        map,
-        title: place.name,
-        position: place.geometry.location,
-      });
-      markers.push(marker);
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-    map.fitBounds(bounds);
-  });
-}
-
-// Render the edit-location form
-app.get('/edit-location',ensureAuthenticated, (req, res) => {
-  const location = 'Jimcy Academy, Nairobi, Kenya';
-  res.render('editlocation', {location});
+app.get('/manage-users',ensureAuthenticated, async(req, res)=>{
+  const querys = 'SELECT * FROM users';
+  const users = await query(querys);
+  res.render('users', {users:users})
 });
 
+app.post('/delete-user/:id',ensureAuthenticated, async(req, res)=>{
 
-// Handle the form submission
-app.post('/edit-location',ensureAuthenticated, async (req, res) => {
-  const { location } = req.body;
-  // Store the location in your database
-  try {
-    const querys = 'UPDATE school SET location = ? WHERE id = ?';
-    const result = await query(querys, [location, userId]);
-    res.redirect('/adminhome');
+  try{
+    const id = req.params.id;
+    const querys = 'DELETE FROM users where id=?'
+    await query(querys,[id]);
+    res.redirect('/manage-users')
   } catch (err) {
-    console.error(err);
+    console.log(err)
     res.status(500).send('Internal Server Error');
   }
 });
 
-
+//////////end of admin routes
 
  
 app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{

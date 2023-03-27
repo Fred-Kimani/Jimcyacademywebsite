@@ -67,6 +67,42 @@
     }
   </style>
 
+<style>
+  footer {
+display: flex;
+justify-content: space-between;
+background-color: #3688f4;
+color: white;
+padding: 20px;
+}
+
+.footer-column {
+flex-basis: 50%;
+text-align: center;
+}
+
+.footer-column h3 {
+margin-top: 0;
+}
+
+.footer-column a {
+display: block;
+color: white;
+text-decoration: none;
+margin-bottom: 10px;
+}
+
+.footer-column a.active {
+font-weight: bold;
+}
+
+.footer-column a:hover {
+text-decoration: underline;
+}
+
+</style>
+
+
 </head>
 
 <body>
@@ -76,8 +112,6 @@
     <a href="/">Home</a>
     <a href="/about" class="active">About</a>
     <a href="/contacts">Contacts</a>
-    <a href="/add-about">Add Info</a>
-    <a href="/login">Login (Site admins only)</a>
   </div>
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -126,6 +160,20 @@
   
     </div>
 
+    <footer>
+      <div class="footer-column">
+        <h3>Users</h3>
+        <a href="/">Home</a>
+        <a href="/about" class="active">About</a>
+        <a href="/contacts">Contacts</a>
+      </div>
+      <div class="footer-column">
+        <h3>Admin</h3>
+        <a href="/login">Login</a>
+      </div>
+    </footer>
+    
+
   <div class="copyright_section">
     <div class="container">
       <p class="copyright">Copyright © 2023. All Rights Reserved. Jimcy Academy</p>
@@ -171,6 +219,8 @@
       }
     }
   </script>
+
+  
   
 
 

@@ -5,6 +5,7 @@
 <head>
   <title>New User</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
   <style>
     body {
       background-color: #f8f8f8;
@@ -63,6 +64,41 @@
       background-color: #c9302c;
     }
   </style>
+
+<style>
+  footer {
+display: flex;
+justify-content: center;
+background-color:#c72a19;
+color: white;
+padding: 20px;
+}
+
+.footer-column {
+flex-basis: 50%;
+text-align: center;
+}
+
+.footer-column h3 {
+margin-top: 0;
+}
+
+.footer-column a {
+display: block;
+color: white;
+text-decoration: none;
+margin-bottom: 10px;
+}
+
+.footer-column a.active {
+font-weight: bold;
+}
+
+.footer-column a:hover {
+text-decoration: underline;
+}
+
+</style>
 </head>
 <body>
   <div class="container">
@@ -76,5 +112,16 @@
       <input type="submit" value="Create User">
     </form>
   </div>
+
+  <footer>
+    <div class="footer-column">
+
+  <a href="/adminhome">Home</a>
+  <a href="/adminabout"  >About</a>
+  <a href="/admincontacts">Contacts</a>
+  <a href="/users" class="active">Add an admin</a>
+  <a href="/manage-users">Manage users</a>
+</div>
+</footer>
 </body>
 </html>

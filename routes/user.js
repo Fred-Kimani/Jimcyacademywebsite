@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
     try {
       const locationDetails = 'SELECT location FROM schoolDetails';
       const [location ]= await query(locationDetails);
-      console.log(location)
       const querys = 'SELECT * FROM about';
       const [about ]= await query(querys);
       res.locals.googleMapsApiKey = googleMapsApiKey;
@@ -47,7 +46,6 @@ router.get('/', async (req, res) => {
   
   router.get('/contacts', async(req, res)=>{
     const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
-    console.log(googleMapsApiKey)
   
     try{
       const locationDetails = 'SELECT location FROM schoolDetails';
@@ -63,6 +61,10 @@ router.get('/', async (req, res) => {
       res.status(500).send('Internal Server Error');
   
     }
+  });
+
+  router.get('/settings', (req, res)=>{
+    res.render('settings')
   });
 
   module.exports = router;

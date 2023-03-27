@@ -1,0 +1,159 @@
+<html lang="en">
+
+<head>
+  <!-- basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- mobile metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- site metas -->
+  <title>Jimcy Academy</title>
+  <link rel="icon" href="/images/logoacad.png">
+
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- style css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Responsive-->
+  <link rel="stylesheet" href="/css/responsive.css">
+  <!-- fevicon -->
+  <link rel="icon" href="/public/images/fevicon.png" type="image/gif" />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
+  <!-- Tweaks for older IEs-->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!-- owl stylesheets -->
+  <link rel="stylesheet" href="/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+    media="screen">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    /* Red theme */
+    body {
+      background-color: #e74c3c;
+    }
+    h1 {
+      color: #fff;
+    }
+    table {
+      background-color: #fff;
+      border-collapse: collapse;
+      margin: 20px auto;
+      width: 80%;
+    }
+    th {
+      background-color: #c0392b;
+      color: #fff;
+      font-weight: normal;
+      padding: 10px;
+      text-align: left;
+    }
+    td {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+    }
+    form {
+      display: inline-block;
+    }
+    button[type="submit"] {
+      background-color: #c0392b;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 10px;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #e74c3c;
+    }
+  </style>
+
+<style>
+  footer {
+display: flex;
+justify-content: center;
+background-color:#c72a19;
+color: white;
+padding: 20px;
+}
+
+.footer-column {
+flex-basis: 50%;
+text-align: center;
+}
+
+.footer-column h3 {
+margin-top: 0;
+}
+
+.footer-column a {
+display: block;
+color: white;
+text-decoration: none;
+margin-bottom: 10px;
+}
+
+.footer-column a.active {
+font-weight: bold;
+}
+
+.footer-column a:hover {
+text-decoration: underline;
+}
+
+</style>
+
+
+  <title>Manage users</title>
+
+  </head>
+
+  <body>
+    <!-- users.ejs -->
+
+<h1>Manage Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+      <tr>
+        <td><%= user.username %></td>
+        <td>
+          <form method="post" action="/delete-user/<%= user.id %>">
+            <button type="submit"><i class="fa fa-trash"></i></button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<footer>
+  <div class="footer-column">
+
+<a href="/adminhome">Home</a>
+<a href="/adminabout" >About</a>
+<a href="/admincontacts">Contacts</a>
+<a href="/users">Add an admin</a>
+<a href="/manage-users" class="active">Manage users</a>
+<a href="/settings">Settings</a>
+</div>
+</footer>
+
+  </body>
+  </html>
