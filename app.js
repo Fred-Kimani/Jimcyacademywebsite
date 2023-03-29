@@ -24,7 +24,8 @@ const nodemailer = require('nodemailer');
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true,
+  //cookie: { secure: true, maxAge: 60000 }
 }));
 
 app.use((req, res, next) => {
@@ -47,6 +48,11 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   next();
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('error', { message: 'Internal server error' });
 });
 
 
@@ -105,10 +111,10 @@ app.use(express.urlencoded({extended: false}));
 
 
  // Login
-app.post("/login", (req, res, next) => {
+ app.post("/login", (req, res, next) => {
   passport.authenticate("user-local", (err, user, info) => {
     if (err) return next(err);
-    if (!user) return res.redirect("/login");
+    if (!user) return res.render("login", { error: info.error });
 
     req.logIn(user, (err) => {
       if (err) return next(err);
@@ -118,14 +124,14 @@ app.post("/login", (req, res, next) => {
 });
 
 
+
 app.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
-      console.log(err);
       res.sendStatus(500);
+      return ({ error: 'An error occurred while processing your request. Please try again later.' });
     } else {
-      req.flash("success_msg", "You are logged out");
-      res.redirect("/login");
+      res.render("login", { success: "You are successfully logged out" });
     }
   });
 });
@@ -194,13 +200,12 @@ app.post('/users', ensureAuthenticated, async(req, res) => {
             res.status(201).redirect('/adminhome');
           })
           .catch((error) => {
-            console.error(error);
             res.status(500).send('Internal server error');
           });
       }
     } catch (err) {
-      console.log(err);
       res.redirect("/users");
+      return ({ error: 'An error occurred while processing your request. Please try again later.' });
     }
   });
 
@@ -212,11 +217,15 @@ app.get('/adminhome',ensureAuthenticated, async (req, res) => {
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
   try {
     const querys = 'SELECT * FROM about';
+    const query_two = 'SELECT * from introduction';
     const locationDetails = 'SELECT location FROM schoolDetails';
     const [location ]= await query(locationDetails);
     const [about ]= await query(querys);
+    const [introduction] = await query(query_two);
     res.locals.googleMapsApiKey = googleMapsApiKey;
-    res.render('home', { about:about, location: location.location  });
+    const updateSuccess = req.session.updateSuccess;
+    req.session.updateSuccess = null;
+    res.render('home', { about:about, location: location.location , success: updateSuccess, introduction:introduction });
 
   } catch (err) {
     console.error(err);
@@ -284,7 +293,7 @@ app.post('/delete-user/:id',ensureAuthenticated, async(req, res)=>{
 app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{
   var id = req.params.id;
   try{
-    const querys =  "SELECT * FROM about WHERE id= ?"
+    const querys =  "SELECT * FROM about WHERE id= ?";
     const [about]= await query(querys, [id]);
     res.render('edithome', {about:about})
 
@@ -293,6 +302,20 @@ app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{
     res.status(500).send('Internal Server Error');
   }
   
+});
+
+app.get('/editintroduction/:id', ensureAuthenticated, upload, async(req, res, next)=>{
+  var id = req.params.id;
+  try{
+    const querys =  "SELECT * FROM introduction WHERE id= ?";
+    const [introduction]= await query(querys, [id]);
+    res.render('editintro', {introduction:introduction});
+
+
+  } catch(err){
+    res.status(500).send('Internal Server Error');
+
+  }
 });
 
 app.get('/editcontacts/:id', ensureAuthenticated, async(req,res)=>{
@@ -333,26 +356,63 @@ app.post('/updatehome/:id', upload, ensureAuthenticated,  async(req, res) => {
 
   // If a new file is selected on the filepicker..
   if (req.file) {
-    // The variable is assigned to the selected image
+    //the variable is assigned to the selected image
     newImage = req.file.filename;
+    console.log(newImage)
 
-    if (req.body.old_image) {
+    if(req.body.old_image){
       try {
-        // Removing the previous image
+        //removing the previous image
         fs.unlinkSync("./images/" + req.body.old_image);
       } catch (err) {
         console.log(err);
       }
+
     }
-  }
+    /*else {
+      //same old image variable assigned to new image variable if image is not updated
+      newImage = req.body.image;
+    }*/
+  } 
 
   try {
     const querys = 'UPDATE about SET heading=?, body=?, image=? WHERE id=?';
     await query(querys, [heading, body, newImage, id]);
-    req.session.message = {
-      type: "success",
-      message: "Home page updated successfully!",
-    };
+    res.redirect('/adminhome');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/updateintroduction/:id', upload, ensureAuthenticated,  async(req, res) => {
+  const { heading, body } = req.body;
+  const id = req.params.id;
+  let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
+
+  // If a new file is selected on the filepicker..
+  if (req.file) {
+    //the variable is assigned to the selected image
+    newImage = req.file.filename;
+
+    if(req.body.old_image){
+      try {
+        //removing the previous image
+        fs.unlinkSync("./images/" + req.body.old_image);
+      } catch (err) {
+        console.log(err);
+      }
+
+    }
+   /* else {
+      //same old image variable assigned to new image variable if image is not updated
+      newImage = req.body.image;
+    }*/
+  } 
+
+  try {
+    const querys = 'UPDATE introduction SET heading=?, body=?, image=? WHERE id=?';
+    await query(querys, [heading, body, newImage, id]);
     res.redirect('/adminhome');
   } catch (err) {
     console.log(err);
@@ -382,20 +442,16 @@ app.post('/updateabout/:id', upload, ensureAuthenticated, async(req,res)=>{
         }
 
       }
-    } else {
-      //same old image variable assigned to new image variable if image is not updated
-      newImage = req.body.image;
-    }
+      else {
+        //same old image variable assigned to new image variable if image is not updated
+        newImage = req.body.image;
+      }
+    } 
 
     try{
       const querys = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?';
       await query(querys, [heading,body,newImage,id]);
-      req.session.message = {
-        type: "success",
-        message: "Updated successfully!",
-      };
       res.redirect('/adminabout');
-
     } catch(err){
       console.log(err)
       res.status(500).send('Internal Server Error');

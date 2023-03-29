@@ -15,10 +15,12 @@ router.get('/', async (req, res) => {
     try {
       const locationDetails = 'SELECT location FROM schoolDetails';
       const [location ]= await query(locationDetails);
+      const query_two = 'SELECT * from introduction';
       const querys = 'SELECT * FROM about';
       const [about ]= await query(querys);
+      const [introduction] = await query(query_two);
       res.locals.googleMapsApiKey = googleMapsApiKey;
-      res.render('userhome', { about:about, location: location.location });
+      res.render('userhome', { about:about, location: location.location,introduction:introduction });
   
     } catch (err) {
       console.error(err);

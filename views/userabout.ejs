@@ -36,35 +36,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <style>
-    .carousel-item {
-      height: 600px;
-      background-position: center;
-      background-size: cover;
-    }
-
-    .carousel-caption {
-      bottom: 5%;
-
-    }
-
-    .carousel-caption h2 {
-      font-size: 2em;
-      color: rgb(0, 0, 0);
-
-      background-color: white;
-      border-radius: 10px;
-      padding: 5px;
-
-    }
-
-    .carousel-caption p {
-      font-size: 1.5em;
-      color: rgb(0, 0, 0);
-      background-color: white;
-      border-radius: 10px;
-      padding: 5px;
-
-    }
+ 
   </style>
 
 <style>
@@ -100,6 +72,153 @@ font-weight: bold;
 text-decoration: underline;
 }
 
+
+/* Desktop Navbar */
+@media (min-width: 768px) {
+  .mobile-nav {
+    display: none;
+  }
+
+  .topnav {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    padding: 0 20px;
+    background-color: #3688f4;
+    color: white;
+  }
+
+  .topnav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 18px;
+  }
+
+  .topnav a:hover {
+    text-decoration: underline;
+  }
+
+  .carousel-item {
+      height: 600px;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .carousel-caption {
+      bottom: 5%;
+
+    }
+
+    .carousel-caption h2 {
+      font-size: 2em;
+      color: rgb(0, 0, 0);
+
+      background-color: white;
+      border-radius: 10px;
+      padding: 5px;
+
+    }
+
+    .carousel-caption p {
+      font-size: 1.5em;
+      color: rgb(0, 0, 0);
+      background-color: white;
+      border-radius: 10px;
+      padding: 5px;
+
+    }
+}
+
+/* Mobile Navbar */
+@media (max-width: 767px) {
+  .topnav {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 90px;
+    padding: 0 20px;
+    background-color: #3688f4;
+    color: white;
+  }
+
+  .mobile-nav img {
+    width: 100px;
+    height: 90px;
+  }
+
+  .icon {
+    font-size: 28px;
+    cursor: pointer;
+  }
+
+  #myLinks {
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    z-index: 1;
+  }
+
+  #myLinks a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  #myLinks a.active {
+    font-weight: bold;
+  }
+
+  #myLinks a:hover {
+    text-decoration: underline;
+  }
+
+  .mobile-nav.active #myLinks {
+    display: block;
+  }
+
+  .carousel-item {
+      height: 600px;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .carousel-caption {
+      bottom: 5%;
+
+    }
+
+  .carousel-caption h2 {
+    font-size: 1.5em;
+    color: rgb(0, 0, 0);
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 0;
+    text-align: center;
+  }
+
+  .carousel-caption p {
+    font-size: 1.2em;
+    color: rgb(0, 0, 0);
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 0;
+    text-align: center;
+  }
+
+}
+
 </style>
 
 
@@ -107,12 +226,25 @@ text-decoration: underline;
 
 <body>
 
-  <div class="topnav">
+  <div class="topnav ">
     <img src="/images/logoacad.png" style="width:100px;height:90px;">
     <a href="/">Home</a>
     <a href="/about" class="active">About</a>
     <a href="/contacts">Contacts</a>
   </div>
+
+  <div class="mobile-nav">
+    <img src="/images/logoacad.png" style="width:100px;height:90px;">
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fa fa-bars"></i>
+    </a>
+    <div id="myLinks">
+      <a href="/">Home</a>
+      <a href="/about" class="active">About</a>
+      <a href="/contacts">Contacts</a>
+    </div>
+  </div>
+  
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -218,6 +350,16 @@ text-decoration: underline;
           });
       }
     }
+
+    function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+
   </script>
 
   

@@ -250,37 +250,14 @@ button {
     top: 20px;
     z-index: 1;
 }
-.banner_section{
-     width: 100%;
-     float: left;
-     background-image: url(../images/wachira.heic);
-     height: auto;
-     background-size: 100%;
-     background-repeat: no-repeat;
-}
+
 .banner_taital_main {
     width: 75%;
     float: right;
     padding-right: 50px;
 }
-.banner_bg {
-    width: 100%;
-    float: left;
-    position: relative;
-    background-image: url(../images/banner-bg.png);
-    height: 660px;
-    background-size: 100%;
-}
-.banner_img {
-    width: 111%;
-    float: left;
-    position: relative;
-    left: -72px;
-    z-index: -2;
-    background-image: url(../images/planting2.jpeg);
-    height: 660px;
-    background-size: 100%;
-}
+
+
 .banner_taital {
     width: 100%;
     float: left;
@@ -300,41 +277,8 @@ button {
     float: left;
     margin-top: 40px;
 }
-.about_us{
-     width: 45%;
-     float: left;
-}
-.about_us a{
-     width: 100%;
-     float: left;
-     font-size: 18px;
-     background-color: #ffffff;
-     color: #303036;
-     padding: 10px 0px;
-     text-align: center;
-}
-.about_us a:hover{
-     background-color: #ffffff;
-     color: #303036;
-}
-.about_bt{
-     width: 45%;
-     float: left;
-}
-.about_bt a{
-     width: 100%;
-     float: left;
-     font-size: 18px;
-     background-color: #303036;
-     color: #ffffff;
-     padding: 10px 0px;
-     text-align: center;
-     margin-left: 15px;
-}
-.about_bt a:hover{
-     background-color: #ffffff;
-     color: #303036;
-}
+
+
 #main_slider .carousel-control-prev:hover, #main_slider .carousel-control-next:hover, #main_slider .carousel-control-prev:focus, #main_slider .carousel-control-next:focus {
     background: #0cd268;
     color: #fff;
@@ -362,121 +306,17 @@ button {
     color: #000;
     border-radius: 100%;
 }
-.about_section {
-    width: 100%;
-    float: left;
-    padding-bottom: 90px;
-}
-.about_text{
-     width: 100%;
-     float: left;
-     font-size: 20px;
-     color: #09d066; 
-}
-.highest_text{
-     width: 100%;
-     float: left;
-     font-size: 28px;
-     color: #303036;
-     font-weight: bold;
-}
+
+
+
 .about_taital{
      width: 75%;
      float: right;
 }
-.lorem_text{
-     width: 100%;
-     float: left;
-     color: #666666;
-     margin-left: 0px;
-     font-size: 16px;
-}
 
-.read_bt{
-     width: 35%;
-     float: left;
-}
-.read_bt a{
-     width: 100%;
-     float: left;
-     font-size: 18px;
-     background-color: #09d066;
-     color: #ffffff;
-     padding: 10px 0px;
-     text-align: center;
-}
-.read_bt a:hover{
-     background-color: #303036;
-     color: #ffffff;
-}
-.image_2 {
-    width: 100%;
-    float: left;
-    padding-top: 25px;
-}
-.care_section{
-     width: 100%;
-     float: left;
-     background-image: url(../images/care-bg.png);
-     height: auto;
-     background-size:cover;
-     background-repeat: no-repeat;
-     padding-bottom: 90px;
-}
-.care_taital {
-    width: 75%;
-    float: left;
-    padding-top: 90px;
-}
-.finest_text{
-     width: 100%;
-     float: left;
-     font-size: 20px;
-     color: #ffffff; 
-     text-align: right;
-}
-.care_text{
-     width: 100%;
-     float: left;
-     font-size: 28px;
-     color: #ffffff;
-     font-weight: bold;
-     text-align: right;
-}
 
-.ipsum_text{
-     width: 100%;
-     float: left;
-     color: #ffffff;
-     margin-left: 0px;
-     font-size: 16px;
-     text-align: right;
-}
 
-.read_bt_2 {
-    width: 35%;
-    float: right;
-    margin-top: 50px;
-}
-.read_bt_2 a{
-     width: 100%;
-     float: left;
-     font-size: 18px;
-     background-color: #09d066;
-     color: #ffffff;
-     padding: 10px 0px;
-     text-align: center;
-}
-.read_bt_2 a:hover {
-    background-color: #fff;
-    color: #000;
-}
-.image_3 {
-    width: 100%;
-    float: left;
-}
-
-.services_section{
+.call_section{
      width: 100%;
      float: left;
 }
@@ -495,7 +335,7 @@ button {
      float: left;
      text-align: center;
 }
-.emergency_text{
+.contact-type{
      width: 100%;
      float: left;
      font-size: 24px;
@@ -523,11 +363,7 @@ button {
 .call_box.active{
      background-color: #09d066;
 }
-.doctor_section{
-     width: 100%;
-     float: left;
-     padding-bottom: 90px;
-}
+
 
 .padding_top0{
      padding-top: 40px;
@@ -796,21 +632,99 @@ input {
 }
 
 
+
+
+/* Desktop Navbar */
 @media (min-width: 768px) {
-
-  .mobile_header { display: none !important; }
-  .destop_header { display: block; }
-
-} 
-
-
-@media (max-width: 767px) {
-
-  .destop_header{ display: none; }
-  .mobile_header { display: block; }
-
-}
-.mobile_header{ display: none; }
+     .mobile-nav {
+       display: none;
+     }
+   
+     .topnav {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       height: 90px;
+       padding: 0 20px;
+       background-color: #3688f4;
+       color: white;
+     }
+   
+     .topnav a {
+       color: white;
+       text-decoration: none;
+       margin-left: 20px;
+       font-size: 18px;
+     }
+   
+     .topnav a.active {
+       font-weight: bold;
+     }
+   
+     .topnav a:hover {
+       text-decoration: underline;
+     }
+   }
+   
+   /* Mobile Navbar */
+   @media (max-width: 767px) {
+     .topnav {
+       display: none;
+     }
+   
+     .mobile-nav {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       height: 90px;
+       padding: 0 20px;
+       background-color: #3688f4;
+       color: white;
+     }
+   
+     .mobile-nav img {
+       width: 100px;
+       height: 90px;
+     }
+   
+     .icon {
+       font-size: 28px;
+       cursor: pointer;
+     }
+   
+     #myLinks {
+       display: none;
+       position: absolute;
+       top: 90px;
+       left: 0;
+       right: 0;
+       background-color: #333;
+       z-index: 1;
+     }
+   
+     #myLinks a {
+       display: block;
+       color: white;
+       padding: 10px;
+       text-align: center;
+       font-size: 18px;
+     }
+   
+     #myLinks a.active {
+       font-weight: bold;
+     }
+   
+     #myLinks a:hover {
+       text-decoration: underline;
+     }
+   
+     .mobile-nav.active #myLinks {
+       display: block;
+     }
+   }
+   
+   
+   
 
 
 footer {

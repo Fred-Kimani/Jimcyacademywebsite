@@ -1,78 +1,113 @@
+<link rel="icon" href="/images/logoacad.png">
 <style>
-    body {
-      background-color: #f8f8f8;
-    }
-    
-    .card {
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-      background-color: #fff;
-    }
-    
-    .card-header {
-      background-color: #ff4444;
-      color: #fff;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px 0;
-      border-radius: 10px 10px 0 0;
-    }
-    
-    .card-body {
-      padding: 30px;
-    }
-    
-    .form-group {
-      margin-bottom: 25px;
-    }
-    
-    label {
-      font-weight: bold;
-    }
-    
-    .form-control {
-      height: 50px;
-      border-radius: 25px;
-      font-size: 18px;
-    }
-    
-    .btn-primary {
-      background-color: #ff4444;
-      border-color: #ff4444;
-      font-weight: bold;
-      border-radius: 25px;
-      height: 50px;
-      font-size: 18px;
-    }
-    
-    .btn-primary:hover {
-      background-color: #ff6666;
-      border-color: #ff6666;
-    }
-    
-    .lead {
-      text-align: center;
-      font-size: 18px;
-    }
-    
-    a {
-      color: #ff4444;
-      font-weight: bold;
-    }
-    
-    a:hover {
-      text-decoration: none;
-      color: #ff6666;
-    }
-    </style>
-    
-    <div class="row mt-5">
+  body {
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-header {
+    background-color: #ff4444;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 0;
+    border-radius: 10px 10px 0 0;
+    width: 100%;
+  }
+
+  .card-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .form-control {
+    height: 50px;
+    border-radius: 25px;
+    font-size: 18px;
+    width: 100%;
+    max-width: 400px;
+    padding: 0 20px;
+  }
+
+  .btn-primary {
+    background-color: #db1717;
+    border-color: #d52121;
+    font-weight: bold;
+    border-radius: 25px;
+    height: 50px;
+    font-size: 18px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 25px;
+  }
+
+  .btn-primary:hover {
+    background-color: #900e0e;
+    border-color: #c01b1b;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  a {
+    color: #ff4444;
+    font-weight: bold;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: #ff6666;
+  }
+</style>
+
+    <body>
+      <div class="row mt-5">
         <div class="col-md-6 m-auto">
           <div class="card card-body">
+            <img src="/images/logoacad.png" style="width:100px;height:90px;">
             <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Login (Site Admins Only)</h1>
-            <%- include ("./partials/messages") %>
+            <% if (typeof error !== 'undefined' && error !== null) { %>
+              <div class="alert alert-danger" style="color: rgb(187, 13, 13);"><%= error %></div>
+            <% } else if (typeof success !== 'undefined' && success !== null) { %>
+              <p style="color: green;"><%= success %></p>
+            <% } %>
+            
             <form action="/login" method="POST">
               <div class="form-group text-center">
                 <label for="username">Username</label>
@@ -82,7 +117,7 @@
                   name="username"
                   class="form-control"
                   placeholder="Enter username"
-                />
+                required/>
               </div>
               <div class="form-group text-center">
                 <label for="password">Password</label>
@@ -92,13 +127,19 @@
                   name="password"
                   class="form-control"
                   placeholder="Enter Password"
-                />
+                required/>
               </div>
               <button type="submit" class="btn btn-primary btn-block text-center">Login</button>
+              
             </form>
+            <a href="/accountsettings/password_reset">Forgot password? Reset</a>
 
           </div>
         </div>
       </div>
+      
+    </body>
+    
+
       
     

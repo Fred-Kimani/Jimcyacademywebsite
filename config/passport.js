@@ -15,19 +15,22 @@ module.exports = function(passport) {
       const querys = 'SELECT * FROM users WHERE username = ?';
       const rows = await query(querys, [username]);
       if (!rows.length) {
-        return done(null, false, { message: 'This username is unregistered' });
+        return done(null, false, { error: 'This username is unregistered' });
       }
       const user = rows[0];
+      if (!password) {
+        return done(null, false, { error: 'Password is required' });
+      }
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
           return done(null, user);
         } else {
-          return done(null, false, { message: 'Password Incorrect' });
+          return done(null, false, { error: 'Password Incorrect' });
         }
       });
     } catch(err) {
-      console.log(err)
+      return done(null, false, { error: 'An error occurred while processing your request. Please try again later.' });
     }
   }));
 
@@ -42,12 +45,12 @@ module.exports = function(passport) {
       try {
         const rows = await query(querys, [sessionConstructor.userId]);
         if (!rows.length) {
-          return done(null, false, { message: 'User not found' });
+          return done(null, false, { error: 'User not found' });
         }
         const user = rows[0];
         done(null, user);
       } catch(err) {
-        console.log(err)
+        return done(null, false, { error: 'An error occurred while processing your request. Please try again later.' });
       }
     }
     })

@@ -44,21 +44,13 @@
   padding: 20px;
 }
 
-.footer-column {
-  flex-basis: 50%;
-  text-align: center;
-}
+
 
 .footer-column h3 {
   margin-top: 0;
 }
 
-.footer-column a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  margin-bottom: 10px;
-}
+
 
 .footer-column a.active {
   font-weight: bold;
@@ -68,67 +60,199 @@
   text-decoration: underline;
 }
 
+@media only screen and (min-width:768px){
+  .footer-column {
+  flex-basis: 50%;
+  text-align: center;
+}
+.footer-column a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+
+.banner_section {
+    height: 55vh;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  .intro-section {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 35vh;
+  position: relative;
+  z-index: 0;
+}
+
+.intro-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.intro-section li {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.intro_text li {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.fa-edit {
+  margin-right: 10px;
+}
+
+.banner_taital li {
+    font-size: 20px;
+  }
+  .long_text li {
+    font-size: 16px;
+  }
+  .navigators-button1,
+  .navigators-button2 {
+    font-size: 14px;
+  }
+
+  
+}
+
+
+@media only screen and (max-width: 767px) {
+  .footer-column {
+    flex-basis: 100%;
+    text-align: center;
+  }
+  .footer-column a {
+    display: inline-block;
+    margin: 10px;
+  }
+
+  .banner_section {
+    height: 55vh;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner_taital li {
+    font-size: 20px;
+  }
+  .long_text li {
+    font-size: 16px;
+  }
+  .navigators-button1,
+  .navigators-button2 {
+    font-size: 14px;
+  }
+
+  .intro-section {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 35vh;
+  position: relative;
+  z-index: 0;
+}
+
+.intro-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.intro-section li {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.intro_text li {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.fa-edit {
+  margin-right: 10px;
+}
+}
+
+
+
+
   </style>
 </head>
 
 <body>
 
   <!-- banner section start -->
+  <% if (typeof updateSuccess !== 'undefined' && updateSuccess !== null) { %>
+    <div class="alert alert-success"><%= updateSuccess %></div>
+    <% updateSuccess = null; %>
+  <% } %>
+  
+  
+  
   <div class="banner_section" style="
-    width: 100%;
-    height: 800px;
-    float: left;
-    background-image: url('/<%= about.image %>');
-    background-size: 100%;
-    background-repeat: no-repeat;">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-6 padding_0">
-          <div id="main_slider" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-
-                
-
-                <div class="banner_taital_main">
-                  <a class="logo_main" href=""><img src="/images/logoacad.png" style="width:100px;height:100px;"></a>
-                  <ul class="banner_taital">
-                   
-                      <a class="fa fa-edit" style="font-size:24px" href="/edithome/<%=about.id%>"></a>
-                      <li><%= about.heading %></li>
-                    
-                  </ul>
-                  <ul class="long_text">
-                    
-                      <li><%= about.body %></li>
-                   
-                  </ul>
-                </div>
-
+  width: 100%;
+  background-image: url('/<%= about.image %>');
+  background-size: 100%;
+  background-repeat: no-repeat;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 padding_0">
+        <div id="main_slider" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <div class="banner_taital_main">
+                <a class="logo_main" href=""><img src="/images/logoacad.png" style="width:100px;height:100px;"></a>
+                <ul class="banner_taital">
+                  <a class="fa fa-edit" style="font-size:24px" href="/edithome/<%=about.id%>"></a>
+                  <li style="color: rgb(255, 255, 255);"><%= about.heading %></li>
+                </ul>
+                <ul class="long_text">
+                  <li style="color:  rgb(255, 255, 255);"><%= about.body %></li>
+                </ul>
               </div>
-
             </div>
           </div>
         </div>
-
       </div>
-      <div class="navigators">
-        <button class="navigators-button1"><a href="/adminabout">Learn more</a></button>
-
-        <button class="navigators-button2"><a href="/admincontacts">Contact us</a></button>
-      </div>
-
+    </div>
+    <div class="navigators">
+      <button class="navigators-button1"><a href="/adminabout">Learn more</a></button>
+      <button class="navigators-button2"><a href="/admincontacts">Contact us</a></button>
     </div>
   </div>
-  </div>
+</div>
+
+<!-- Add this CSS after the existing styles to make the page responsive -->
+
+
   <!-- banner section end -->
 
-  <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
+  <div class="intro-section" style="background-image: url('/<%= introduction.image %>');">
+  
+      <ul>
+        <a class="fa fa-edit" href="/editintroduction/<%=introduction.id%>"></a>
+        <li><%= introduction.heading %></li>
+      </ul>
+      <ul class="intro_text">
+        <li><%= introduction.body %></li>
+      </ul>
+
+  </div>
+
+  <div style="width: 100%; height: 300px; display: flex; justify-content: center; align-items: center;">
 
 
   <iframe
   width="600"
-  height="450"
+  height="250px"
   frameborder="0" style="border:0"
   src="https://www.google.com/maps/embed/v1/place?key=<%= googleMapsApiKey %>
   &q=<%= location %>" allowfullscreen>
