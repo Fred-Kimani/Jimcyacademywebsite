@@ -42,29 +42,7 @@
       background-size: cover;
     }
 
-    .carousel-caption {
-      bottom: 5%;
 
-    }
-
-    .carousel-caption h2 {
-      font-size: 2em;
-      color: rgb(0, 0, 0);
-
-      background-color: white;
-      border-radius: 10px;
-      padding: 5px;
-
-    }
-
-    .carousel-caption p {
-      font-size: 1.5em;
-      color: rgb(0, 0, 0);
-      background-color: white;
-      border-radius: 10px;
-      padding: 5px;
-
-    }
   </style>
 
 <style>
@@ -106,6 +84,34 @@ text-decoration: underline;
     display: none;
   }
 
+  .mobile-carousel{
+    display: none;
+  }
+
+  .carousel-caption {
+      bottom: 5%;
+
+    }
+
+    .carousel-caption h2 {
+      font-size: 2em;
+      color: rgb(0, 0, 0);
+
+      background-color: white;
+      border-radius: 10px;
+      padding: 5px;
+
+    }
+
+    .carousel-caption p {
+      font-size: 1.5em;
+      color: rgb(0, 0, 0);
+      background-color: white;
+      border-radius: 10px;
+      padding: 5px;
+
+    }
+
   .topnav {
     display: flex;
     justify-content: space-between;
@@ -135,6 +141,10 @@ text-decoration: underline;
 /* Mobile Navbar */
 @media (max-width: 767px) {
   .topnav {
+    display: none;
+  }
+
+  .desktop-carousel{
     display: none;
   }
 
@@ -187,6 +197,57 @@ text-decoration: underline;
   .mobile-nav.active #myLinks {
     display: block;
   }
+
+  .carousel-item {
+  height: 600px;
+  background-position: center;
+  background-size: cover;
+  position: relative; /* Make the .carousel-item element position:relative */
+}
+
+.carousel-caption {
+  position: absolute; /* Position the .carousel-caption element absolutely within the .carousel-item */
+  bottom: 0; /* Position the .carousel-caption element at the bottom of the .carousel-item */
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  margin-bottom: -4rem; /* Set a negative margin to make the .carousel-caption extend below the image */
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0 0 10px 10px;
+  text-align: center;
+}
+
+.carousel-caption h2 {
+  font-size: 1.5em;
+  color: rgb(0, 0, 0);
+  margin: 0;
+}
+
+.carousel-caption p {
+  font-size: 1.2em;
+  color: rgb(0, 0, 0);
+  margin: 0;
+
+
+}
+.mobile-carousel-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.mobile-carousel-caption h2,
+.mobile-carousel-caption p {
+  margin: 0;
+  color: #000;
+}
+
+
+
 }
 
 
@@ -204,6 +265,7 @@ text-decoration: underline;
     <a href="/add-about">Add Info</a>
     <a href="/users">Add an admin</a>
     <a href="/manage-users">Manage users</a>
+    <a href="/contact-messages">Messages</a>
     <a href="/settings">Settings</a>
   </div>
 
@@ -219,12 +281,13 @@ text-decoration: underline;
       <a href="/add-about">Add Info</a>
       <a href="/users">Add an admin</a>
       <a href="/manage-users">Manage users</a>
+      <a href="/contact-messages">Messages</a>
       <a href="/settings">Settings</a>
     </div>
   </div>
   
 
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <div id="myCarousel" class="carousel slide desktop-carousel" data-ride="carousel">
     <ol class="carousel-indicators">
       <% for(let i=0; i<card.length; i++){ %>
         <li data-target="#myCarousel" data-slide-to="<%=i%>" class="<%= i===0 ? 'active' : '' %>"></li>
@@ -259,6 +322,44 @@ text-decoration: underline;
     </a>
   </div>
 
+
+  <div id="myCarousel2" class="carousel slide mobile-carousel" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <% for(let i=0; i<card.length; i++){ %>
+        <li data-target="#myCarousel2" data-slide-to="<%=i%>" class="<%= i===0 ? 'active' : '' %>"></li>
+        <% } %>
+    </ol>
+    <div class="carousel-inner">
+      <% for(let i=0; i<card.length; i++){ %>
+        <div class="carousel-item <%= i===0 ? 'active' : '' %>" style="background-image: url(<%=card[i].image%>);">
+          <div class="mobile-carousel-caption">
+            <a class="fa fa-edit" style="font-size:24px; color: rgb(14, 219, 14);"
+              href="/editabout/<%=card[i].id%>"></a>
+            <button class="fa fa-trash" style="font-size:24px; color: red; "
+              onclick="deleteAbout(<%=card[i].id%>)"></button>
+            <h2>
+              <%=card[i].heading%>
+            </h2>
+            <p>
+              <%=card[i].body%>
+            </p>
+          </div>
+        </div>
+        <% } %>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel2" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel2" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div style="display: flex; justify-content: center;"><h1 style="font-weight: bold; color: black;">
+    Where to find us</h1></div>
+
   <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
 
 
@@ -283,6 +384,7 @@ text-decoration: underline;
     <a href="/admincontacts">Contacts</a>
     <a href="/users">Add an admin</a>
     <a href="/manage-users">Manage users</a>
+    <a href="/contact-messages">Messages</a>
     <a href="/settings">Settings</a>
   </div>
 </footer>

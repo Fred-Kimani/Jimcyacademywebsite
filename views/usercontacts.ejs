@@ -66,6 +66,44 @@
       text-decoration: underline;
     }
 
+    form {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+textarea {
+  height: 150px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0062cc;
+}
+
+
 
 /* Desktop Navbar */
 @media (min-width: 768px) {
@@ -103,6 +141,7 @@
 
   .mobile-nav {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 90px;
     padding: 0 20px;
@@ -158,6 +197,16 @@
 
 <body>
 
+  <% if (successMsg) { %>
+    <div class="alert alert-success">
+      <%= successMsg %>
+    </div>
+  <% } else if (errorMsg) { %>
+    <div class="alert alert-danger">
+      <%= errorMsg %>
+    </div>
+  <% } %>
+
   <div class="mobile-nav">
     <img src="/images/logoacad.png" style="width:100px;height:90px;">
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
@@ -165,8 +214,8 @@
     </a>
     <div id="myLinks">
       <a href="/">Home</a>
-      <a href="/about" class="active">About</a>
-      <a href="/contacts">Contacts</a>
+      <a href="/about" >About</a>
+      <a href="/contacts" class="active">Contacts</a>
     </div>
   </div>
   
@@ -178,7 +227,7 @@
         <a class="active">Contacts</a>
     </div>
 
-    <div class="services_section layout_padding padding_bottom_0">
+    <div class="services_section layout_padding padding_bottom_0" style="z-index: 2;">
         <div class="container">
           <h1 class="blog_text">Contact us</h1>
           <div class="row">
@@ -200,6 +249,25 @@
           </div>
         </div>
       </div>
+
+      <div style=" justify-content: center; z-index: 0;">
+
+        
+
+      <form action="/contactus" method="POST"> <h1 style="font-weight: bold;">Send us a message</h1>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required required maxlength="35">
+      
+        <label for="contact">Email or Phone Number:</label>
+        <input type="text" id="contact" name="contact" required required maxlength="50">
+      
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required required maxlength="255"></textarea>
+      
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+      
 
       <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
 

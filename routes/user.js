@@ -48,6 +48,8 @@ router.get('/', async (req, res) => {
   
   router.get('/contacts', async(req, res)=>{
     const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+    const successMsg = null;
+    const errorMsg = null;
   
     try{
       const locationDetails = 'SELECT location FROM schoolDetails';
@@ -56,7 +58,7 @@ router.get('/', async (req, res) => {
       const querys =  "SELECT * FROM ContactDetails"
       const contact = await query(querys);
       res.locals.googleMapsApiKey = googleMapsApiKey;
-      res.render('usercontacts', {contact, location: location.location })
+      res.render('usercontacts', {contact, location: location.location, successMsg, errorMsg })
     }
     catch (err) {
       console.log(err)

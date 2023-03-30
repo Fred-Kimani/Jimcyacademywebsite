@@ -43,7 +43,7 @@
   footer {
 display: flex;
 justify-content: center;
-background-color:#c72a19;
+background-color:#1987c7;
 color: white;
 padding: 20px;
 }
@@ -73,6 +73,19 @@ text-decoration: underline;
 color: rgb(0, 204, 255);
 }
 
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+  }
+
 </style>
 
     <title>Edit Description of Your School</title>
@@ -80,11 +93,13 @@ color: rgb(0, 204, 255);
 <body>
     <div>
         <form action="/updateabout/<%= card.id%>" method="post" enctype="multipart/form-data">
-          <label for="heading">About Heading</label>
+          <label for="heading">Heading</label>
           <input type="text" id="heading" name="heading" placeholder="About Heading" value="<%= card.heading%>">
       
-          <label for="lname">About Body</label>
-          <input type="text" id="body" name="body" placeholder="About Body" value="<%= card.body%>">
+          <div>
+          <label for="body">Body</label>
+          <textarea type="text" id="body" name="body" placeholder="About Body" rows="10"><%= card.body%></textarea>
+        </div>
 
           <div class="form-group">
             <label for="image">Change Image</label>
@@ -106,6 +121,8 @@ color: rgb(0, 204, 255);
       <a href="/admincontacts">Contacts</a>
       <a href="/users" >Add an admin</a>
       <a href="/manage-users">Manage users</a>
+      <a href="/contact-messages">Messages</a>
+      <a href="/settings">Settings</a>
     </div>
     </footer>
     

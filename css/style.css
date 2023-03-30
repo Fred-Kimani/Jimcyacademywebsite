@@ -279,35 +279,6 @@ button {
 }
 
 
-#main_slider .carousel-control-prev:hover, #main_slider .carousel-control-next:hover, #main_slider .carousel-control-prev:focus, #main_slider .carousel-control-next:focus {
-    background: #0cd268;
-    color: #fff;
-}
-#main_slider a.carousel-control-next {
-    position: absolute;
-    left: 87%;
-    top: 88%;
-    background-color: #0cd268;
-    color: #ffffff;
-}
-#main_slider a.carousel-control-prev {
-    position: absolute;
-    left: 87%;
-    top: 77%;
-    background-color: #000;
-    color: #ffffff;
-}
-#main_slider .carousel-control-prev, #main_slider .carousel-control-next {
-    width: 65px;
-    height: 65px;
-    background: #fff;
-    opacity: 1;
-    font-size: 30px;
-    color: #000;
-    border-radius: 100%;
-}
-
-
 
 .about_taital{
      width: 75%;
@@ -463,13 +434,7 @@ button {
 .form-group {
     margin-bottom: 27px;
 }
-.carousel-indicators li {
-    width: 30px;
-    height: 20px;
-}
-.carousel-indicators {
-     bottom: -60px;
-}
+
 .appointment_section {
     width: 100%;
     float: left;

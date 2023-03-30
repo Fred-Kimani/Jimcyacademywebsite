@@ -268,11 +268,13 @@ app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
   }
 });
 
-app.get('/manage-users',ensureAuthenticated, async(req, res)=>{
-  const querys = 'SELECT * FROM users';
+app.get('/manage-users', ensureAuthenticated, async (req, res) => {
+  const currentUserId = req.user.id;
+  const querys = `SELECT * FROM users WHERE id != ${currentUserId}`;
   const users = await query(querys);
-  res.render('users', {users:users})
+  res.render('users', { users: users });
 });
+
 
 app.post('/delete-user/:id',ensureAuthenticated, async(req, res)=>{
 
@@ -358,7 +360,6 @@ app.post('/updatehome/:id', upload, ensureAuthenticated,  async(req, res) => {
   if (req.file) {
     //the variable is assigned to the selected image
     newImage = req.file.filename;
-    console.log(newImage)
 
     if(req.body.old_image){
       try {
@@ -385,30 +386,10 @@ app.post('/updatehome/:id', upload, ensureAuthenticated,  async(req, res) => {
   }
 });
 
-app.post('/updateintroduction/:id', upload, ensureAuthenticated,  async(req, res) => {
+app.post('/updateintroduction/:id',  ensureAuthenticated,  async(req, res) => {
   const { heading, body } = req.body;
   const id = req.params.id;
-  let newImage = req.body.image || req.body.old_image; // set to about.image if req.body.image is undefined
 
-  // If a new file is selected on the filepicker..
-  if (req.file) {
-    //the variable is assigned to the selected image
-    newImage = req.file.filename;
-
-    if(req.body.old_image){
-      try {
-        //removing the previous image
-        fs.unlinkSync("./images/" + req.body.old_image);
-      } catch (err) {
-        console.log(err);
-      }
-
-    }
-   /* else {
-      //same old image variable assigned to new image variable if image is not updated
-      newImage = req.body.image;
-    }*/
-  } 
 
   try {
     const querys = 'UPDATE introduction SET heading=?, body=?, image=? WHERE id=?';
@@ -442,10 +423,10 @@ app.post('/updateabout/:id', upload, ensureAuthenticated, async(req,res)=>{
         }
 
       }
-      else {
+      /*else {
         //same old image variable assigned to new image variable if image is not updated
         newImage = req.body.image;
-      }
+      }*/
     } 
 
     try{
@@ -518,7 +499,52 @@ app.post('/addabout', upload, ensureAuthenticated, async(req,res)=>{
     console.log(err)
     res.status(500).send('Internal Server Error');
   }
-})
+});
+
+
+
+app.post('/contactus', async (req, res) => {
+  const { name, contact, message } = req.body;
+
+  try {
+    const querys = 'INSERT INTO messages (name, contact, message) VALUES (?, ?, ?)';
+    await query(querys, [name, contact, message]);
+    req.flash('successMsg', 'Message sent successfully');
+    res.redirect('/contacts');
+  } catch (err) {
+    req.flash('errorMsg', 'Error sending message');
+      res.redirect('/contacts');
+  }
+});
+
+app.get('/contact-messages',ensureAuthenticated ,async (req, res) => {
+  try {
+    const querys = 'SELECT * FROM messages';
+    const messages = await query(querys);
+
+    res.render('contact-messages.ejs', { messages });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.post('/delete-message/:id', ensureAuthenticated, async(req, res) => {
+
+  try{
+  const id = req.params.id;
+  const deleteQuery = 'DELETE FROM messages WHERE id=?';
+  await query(deleteQuery , [id]);
+  res.redirect('/contact-messages')
+
+  }catch(err){
+    console.log(err);
+    res.status(500).send('Internal Server Error');
+
+  }
+});
+
+
 
 
 

@@ -4,44 +4,74 @@
     <meta charset="utf-8">
     <title>Settings</title>
     <link rel="icon" href="/images/logoacad.png">
+    
     <style>
-        body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  padding: 20px;
-}
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f2f2f2;
+      }
 
-h1 {
-  margin-bottom: 20px;
-}
+      h1 {
+        margin-top: 0;
+      }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(26, 148, 200);
+        width: 50%;
+        height: 300px;
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+      }
 
-li {
-  margin-bottom: 10px;
-}
+      button {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
-a {
-  color: #150505;
-  text-decoration: none;
-  font-weight: bold;
-}
+      .btn-blue {
+        background-color: #2b8df5;
+        color: #fff;
+      }
 
-a:hover {
-  text-decoration: underline;
-}
+      .btn-red {
+        background-color: #dc3545;
+        color: #fff;
+      }
 
+      a {
+        display: inline-block;
+        padding: 20px 40px;
+        margin-bottom: 20px;
+        border-radius: 50px;
+        text-align: center;
+        color: #fff;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
-    <h1>Settings</h1>
-    <ul>
-      <li><a href="/accountsettings/password_reset">Reset Password</a></li>
-      <li><a href="/logout">Logout</a></li>
-    </ul>
+    <div class="container">
+      <h1>Settings</h1>
+      <a href="/accountsettings/password_reset" class="btn-blue">Reset Password</a>
+      <a href="/logout" class="btn-red">Logout</a>
+    </div>
   </body>
 </html>

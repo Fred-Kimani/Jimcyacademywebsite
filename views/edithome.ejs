@@ -45,7 +45,7 @@
   footer {
 display: flex;
 justify-content: center;
-background-color:#c72a19;
+background-color:#1987c7;
 color: white;
 padding: 20px;
 }
@@ -75,6 +75,19 @@ text-decoration: underline;
 color: rgb(0, 204, 255);
 }
 
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+  }
+
 </style>
 
 </head>
@@ -84,9 +97,10 @@ color: rgb(0, 204, 255);
           <label for="heading">Heading</label>
           <input type="text" id="heading" class="form-control" name="heading" placeholder="Heading" value="<%= about.heading %>">
       
+          <div>
           <label for="body">Body</label>
-          <input type="text" id="body" name="body" class="form-control" placeholder="Body" value="<%= about.body %>">
-
+          <textarea type="text" id="body" name="body" class="form-control" placeholder="Body" rows="10"><%= about.body %></textarea>
+        </div>
 
           <div class="form-group">
             <label for="image">Change Image</label>
@@ -96,7 +110,7 @@ color: rgb(0, 204, 255);
           </div>
       
         
-          <input type="submit" class="btn btn-primary" value="Submit" style="background-color: rgb(255, 0, 0);">
+          <input type="submit" class="btn btn-primary" value="Submit" style="background-color: rgb(59, 227, 40);">
         </form>
       </div>
 
@@ -108,6 +122,8 @@ color: rgb(0, 204, 255);
       <a href="/admincontacts">Contacts</a>
       <a href="/users">Add an admin</a>
       <a href="/manage-users">Manage users</a>
+      <a href="/contact-messages">Messages</a>
+      <a href="/settings">Settings</a>
     </div>
     </footer>
     
