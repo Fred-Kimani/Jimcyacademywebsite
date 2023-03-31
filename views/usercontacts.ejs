@@ -1,209 +1,212 @@
 <html lang="en">
 
 <head>
-    <!-- basic -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- mobile metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <!-- site metas -->
-    <title>Contact Details</title>
-    <link rel="icon" href="/images/logoacad.png">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="../css/bootstrap.min.css"> 
-    <!-- style css -->
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- Responsive-->
-    <link rel="stylesheet" href="../css/responsive.css">
-    <!-- fevicon -->
-    <link rel="icon" href="/public/images/fevicon.png" type="image/gif" />
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
-    <!-- Tweaks for older IEs-->
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-    <!-- owl stylesheets -->
-    <link rel="stylesheet" href="../css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
-      media="screen">
-  
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- mobile metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <!-- site metas -->
+  <title>Contact Details</title>
+  <link rel="icon" href="../public/images/logoacad.png">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <!-- style css -->
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- Responsive-->
+  <link rel="stylesheet" href="../css/responsive.css">
+  <!-- fevicon -->
+  <link rel="icon" href="/public/images/fevicon.png" type="image/gif" />
+  <!-- Scrollbar Custom CSS -->
+  <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css">
+  <!-- Tweaks for older IEs-->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <!-- owl stylesheets -->
+  <link rel="stylesheet" href="../css/owl.carousel.min.css">
+  <link rel="stylesheet" href="../css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+    media="screen">
 
-      <style>
-        footer {
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+    footer {
       display: flex;
       justify-content: space-between;
       background-color: #3688f4;
       color: white;
       padding: 20px;
     }
-    
+
     .footer-column {
       flex-basis: 50%;
       text-align: center;
     }
-    
+
     .footer-column h3 {
       margin-top: 0;
     }
-    
+
     .footer-column a {
       display: block;
       color: white;
       text-decoration: none;
       margin-bottom: 10px;
     }
-    
+
     .footer-column a.active {
       font-weight: bold;
     }
-    
+
     .footer-column a:hover {
       text-decoration: underline;
     }
 
     a:hover {
-  color: rgb(21, 93, 165);
-  text-decoration: underline;
-}
+      color: rgb(21, 93, 165);
+      text-decoration: underline;
+    }
 
     form {
-  margin: 0 auto;
-  max-width: 500px;
-}
-.call_box {
-     width: 100%;
-     height: 450px;
-     background-color: #303137;
-     padding: 40px 20px 20px 20px;
-   }
+      margin: 0 auto;
+      max-width: 500px;
+    }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 20px;
-}
+    .call_box {
+      width: 100%;
+      height: 450px;
+      background-color: #303137;
+      padding: 40px 20px 20px 20px;
+    }
 
-input[type="text"], input[type="email"], input[type="tel"], textarea {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  margin-top: 5px;
-}
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 20px;
+    }
 
-textarea {
-  height: 150px;
-}
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
 
-button[type="submit"] {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-top: 20px;
-  cursor: pointer;
-}
+    textarea {
+      height: 150px;
+    }
 
-button[type="submit"]:hover {
-  background-color: #0062cc;
-}
+    button[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
 
-
-
-/* Desktop Navbar */
-@media (min-width: 768px) {
-  .mobile-nav {
-    display: none;
-  }
-
-  .topnav {
-    display: flex;
-    align-items: center;
-    height: 90px;
-    padding: 0 20px;
-    background-color: #3688f4;
-    color: white;
-  }
-
-  .topnav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    font-size: 18px;
-  }
+    button[type="submit"]:hover {
+      background-color: #0062cc;
+    }
 
 
-  .topnav a:hover {
-    text-decoration: underline;
-  }
-}
 
-/* Mobile Navbar */
-@media (max-width: 767px) {
-  .topnav {
-    display: none;
-  }
+    /* Desktop Navbar */
+    @media (min-width: 768px) {
+      .mobile-nav {
+        display: none;
+      }
 
-  .mobile-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
-    padding: 0 20px;
-    background-color: #3688f4;
-    color: white;
-  }
+      .topnav {
+        display: flex;
+        align-items: center;
+        height: 90px;
+        padding: 0 20px;
+        background-color: #3688f4;
+        color: white;
+      }
 
-  .mobile-nav img {
-    width: 100px;
-    height: 90px;
-  }
+      .topnav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 18px;
+      }
 
-  .icon {
-    font-size: 28px;
-    cursor: pointer;
-  }
 
-  #myLinks {
-    display: none;
-    position: absolute;
-    top: 90px;
-    left: 0;
-    right: 0;
-    background-color: #333;
-    z-index: 1;
-  }
+      .topnav a:hover {
+        text-decoration: underline;
+      }
+    }
 
-  #myLinks a {
-    display: block;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    font-size: 18px;
-  }
+    /* Mobile Navbar */
+    @media (max-width: 767px) {
+      .topnav {
+        display: none;
+      }
 
-  #myLinks a.active {
-    font-weight: bold;
-  }
+      .mobile-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 90px;
+        padding: 0 20px;
+        background-color: #3688f4;
+        color: white;
+      }
 
-  #myLinks a:hover {
-    text-decoration: underline;
-  }
+      .mobile-nav img {
+        width: 100px;
+        height: 90px;
+      }
 
-  .mobile-nav.active #myLinks {
-    display: block;
-  }
-}
-    
-      </style>
-  
-  </head>
+      .icon {
+        font-size: 28px;
+        cursor: pointer;
+      }
+
+      #myLinks {
+        display: none;
+        position: absolute;
+        top: 90px;
+        left: 0;
+        right: 0;
+        background-color: #333;
+        z-index: 1;
+      }
+
+      #myLinks a {
+        display: block;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      #myLinks a.active {
+        font-weight: bold;
+      }
+
+      #myLinks a:hover {
+        text-decoration: underline;
+      }
+
+      .mobile-nav.active #myLinks {
+        display: block;
+      }
+    }
+  </style>
+
+</head>
 
 
 <body>
@@ -212,100 +215,107 @@ button[type="submit"]:hover {
     <div class="alert alert-success">
       <%= successMsg %>
     </div>
-  <% } else if (errorMsg) { %>
-    <div class="alert alert-danger">
-      <%= errorMsg %>
-    </div>
-  <% } %>
-
-  <div class="mobile-nav">
-    <img src="/images/logoacad.png" style="width:100px;height:90px;">
-    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-      <i class="fa fa-bars"></i>
-    </a>
-    <div id="myLinks">
-      <a href="/">Home</a>
-      <a href="/about" >About</a>
-      <a href="/contacts" class="active">Contacts</a>
-    </div>
-  </div>
-  
-
-    <div class="topnav desktop-nav">
-        <img src="/images/logoacad.png" style="width:100px;height:90px;">
-        <a href="/">Home</a>
-        <a href="/about" >About</a>
-        <a class="active">Contacts</a>
-    </div>
-
-    <div class="call_section layout_padding padding_bottom_0">
-      <div class="container">
-        <h1 class="blog_text">Contact us</h1>
-        <div class="row">
-
-          
-
-
-          <% contact.forEach((row) => { %>
-            <div class="col-lg-4">
-              <div class="call_box">
-                <div class="call_image"><img src="<%= row.image %>" style="width:200px;height:150px;"></div>
-                <% if (row.type === 'Facebook') { %>
-                  <h2 class="emergency_text"><%= row.type %></h2>
-                  <a href="<%= row.details %>" target="_blank"><h1 style="font-weight: bold; color: white;">Click here to visit our Facebook page</h1></a>
-                <% } else { %>
-                  <h2 class="emergency_text"><%= row.type %></h2>
-                  <h1 class="call_text"><%= row.details %></h1>
-                  <h3 class="dolor_text"><%= row.preference %></h3>
-                <% } %>
-              </div>
-            </div>
-          <% }); %>
-
-
-  
-        </div>
+    <% } else if (errorMsg) { %>
+      <div class="alert alert-danger">
+        <%= errorMsg %>
       </div>
-    </div>
+      <% } %>
 
-      <div style=" justify-content: center; z-index: 0;">
-
-        
-
-      <form action="/contactus" method="POST" > <h1 style="font-weight: bold;" >Send us a message</h1>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required required maxlength="35">
-      
-        <label for="contact">Email or Phone Number:</label>
-        <input type="text" id="contact" name="contact" required required maxlength="50">
-      
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required required maxlength="255"></textarea>
-      
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
-      
-
-      <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
+        <div class="mobile-nav">
+          <img src="../public/images/logoacad.png" style="width:100px;height:90px;">
+          <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+          </a>
+          <div id="myLinks">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/contacts" class="active">Contacts</a>
+          </div>
+        </div>
 
 
-        <iframe
-        width="600"
-        height="450"
-        frameborder="0" style="border:0"
-        src="https://www.google.com/maps/embed/v1/place?key=<%= googleMapsApiKey %>
+        <div class="topnav desktop-nav">
+          <img src="../public/images/logoacad.png" style="width:100px;height:90px;">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a class="active">Contacts</a>
+        </div>
+
+        <div class="call_section layout_padding padding_bottom_0">
+          <div class="container">
+            <h1 class="blog_text">Contact us</h1>
+            <div class="row">
+
+
+
+
+              <% contact.forEach((row)=> { %>
+                <div class="col-lg-4">
+                  <div class="call_box">
+                    <div class="call_image"><img src="<%= row.image %>" style="width:200px;height:150px;"></div>
+                    <% if (row.type==='Facebook' ) { %>
+                      <h2 class="emergency_text">
+                        <%= row.type %>
+                      </h2>
+                      <a href="<%= row.details %>" target="_blank">
+                        <h1 style="font-weight: bold; color: white;">Click here to visit our Facebook page</h1>
+                      </a>
+                      <% } else { %>
+                        <h2 class="emergency_text">
+                          <%= row.type %>
+                        </h2>
+                        <h1 class="call_text">
+                          <%= row.details %>
+                        </h1>
+                        <h3 class="dolor_text">
+                          <%= row.preference %>
+                        </h3>
+                        <% } %>
+                  </div>
+                </div>
+                <% }); %>
+
+
+
+            </div>
+          </div>
+        </div>
+
+        <div style=" justify-content: center; z-index: 0;">
+
+
+
+          <form action="/contactus" method="POST">
+            <h1 style="font-weight: bold;">Send us a message</h1>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required required maxlength="35">
+
+            <label for="contact">Email or Phone Number:</label>
+            <input type="text" id="contact" name="contact" required required maxlength="50">
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required required maxlength="255"></textarea>
+
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+
+
+        <div style="width: 100%; height: 500px; display: flex; justify-content: center; align-items: center;">
+
+
+          <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=<%= googleMapsApiKey %>
         &q=<%= location %>" allowfullscreen>
-      </iframe>
-      
-      
+          </iframe>
+
+
         </div>
 
         <footer>
           <div class="footer-column">
             <h3>Users</h3>
             <a href="/">Home</a>
-            <a href="/about" >About</a>
+            <a href="/about">About</a>
             <a href="/contacts" class="active">Contacts</a>
           </div>
           <div class="footer-column">
@@ -313,38 +323,38 @@ button[type="submit"]:hover {
             <a href="/login">Login</a>
           </div>
         </footer>
-        
+
 
         <div class="copyright_section">
-            <div class="container">
-              <p class="copyright">Copyright © 2023. All Rights Reserved. Jimcy Academy</p>
-            </div>
+          <div class="container">
+            <p class="copyright">Copyright © 2023. All Rights Reserved. Jimcy Academy</p>
           </div>
-          <!-- copyright section end -->
-          <!-- Javascript files-->
-          <script src="/js/jquery.min.js"></script>
-          <script src="/js/popper.min.js"></script>
-          <script src="/js/bootstrap.bundle.min.js"></script>
-          <script src="/js/jquery-3.0.0.min.js"></script>
-          <script src="/js/plugin.js"></script>
-          <!-- sidebar -->
-          <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
-          <script src="/js/custom.js"></script>
-          <!-- javascript -->
-          <script src="/js/owl.carousel.js"></script>
-          <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
-      </div>
+        </div>
+        <!-- copyright section end -->
+        <!-- Javascript files-->
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/jquery-3.0.0.min.js"></script>
+        <script src="/js/plugin.js"></script>
+        <!-- sidebar -->
+        <script src="/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script src="/js/custom.js"></script>
+        <!-- javascript -->
+        <script src="/js/owl.carousel.js"></script>
+        <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+        </div>
 
 </body>
 
 <script>function myFunction() {
-  var x = document.getElementById("myLinks");
-  if (x.style.display === "block") {
-    x.style.display = "none";
-  } else {
-    x.style.display = "block";
+    var x = document.getElementById("myLinks");
+    if (x.style.display === "block") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "block";
+    }
   }
-}
 </script>
 
 </html>
