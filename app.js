@@ -440,24 +440,40 @@ app.post('/updateabout/:id', upload, ensureAuthenticated, async(req,res)=>{
     }
 });
 
-app.post('/updatecontacts/:id',ensureAuthenticated, async(req,res)=>{
-  const {details, preference} = req.body;
-  var id = req.params.id;
+app.post('/updatecontacts/:id', upload, ensureAuthenticated, async (req, res) => {
+  const { details, preference } = req.body;
+  const id = req.params.id;
+  console.log(req.file)
 
-  try{
-    const querys = 'UPDATE ContactDetails SET preference = ?, details=? WHERE id=?';
-    await query(querys, [preference, details,id]);
+  // Check if a new image was uploaded
+  let newImage;
+  if (req.file) {
+    newImage = req.file.filename;
+  } else {
+    newImage = req.body.old_image;
+  }
+
+  try {
+    // Update the contact details in the database
+    const querys = 'UPDATE ContactDetails SET preference = ?, details = ?, image = ? WHERE id = ?';
+    await query(querys, [preference, details, newImage, id]);
+
+    // Delete the old image file if a new image was uploaded
+    if (req.file && req.body.old_image) {
+      fs.unlinkSync(`./images/${req.body.old_image}`);
+    }
+
     req.session.message = {
-      type: "success",
-      message: "Contact details updated successfully!",
+      type: 'success',
+      message: 'Contact details updated successfully!',
     };
     res.redirect('/admincontacts');
-
-  } catch(err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 app.delete('/deleteabout/:id',ensureAuthenticated, async (req, res) => {
   var id = req.params.id;

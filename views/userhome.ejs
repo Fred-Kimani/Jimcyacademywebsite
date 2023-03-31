@@ -63,6 +63,21 @@
       text-decoration: underline;
     }
 
+    .banner_taital_text {
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: -10px;
+  
+}
+
+.banner_taital_text::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+
     @media only screen and (min-width:768px) {
       .footer-column {
         flex-basis: 50%;
@@ -91,6 +106,7 @@
         height: 35vh;
         position: relative;
         z-index: 0;
+        
       }
 
       .intro-section ul {
@@ -222,39 +238,48 @@
 
 <body>
 
+
+
   <!-- banner section start -->
   <div class="banner_section" style="
   width: 100%;
   background-image: url('/<%= about.image %>');
   background-size: 100%;
   background-repeat: no-repeat;">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-6 padding_0">
-                <div id="main_slider" class="carousel slide" data-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <div class="banner_taital_main">
-                        <a class="logo_main" href=""><img src="/images/logoacad.png"
-                            style="width:100px;height:100px;"></a>
-                        <ul class="banner_taital" style="float: left;">
-                          <li style="color: rgb(0, 0, 0); font-weight: bold;">
-                            <%= about.heading %>
-                          </li>
-                        </ul>
-                        <ul class="long_text">
-                          <li style="color:  rgb(0, 0, 0);">
-                            <%= about.body %>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 padding_0">
+      <div id="main_slider" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="banner_taital_main" style="border-radius: 10px; padding-top: 10px;">
+              <a class="logo_main" href=""><img src="/images/logoacad.png" style="width:100px;height:100px;"></a>
+              <div class="banner_taital_text" style="">
+                <div>
+                  <ul class="banner_taital">
+                    <li style="color: rgb(255, 255, 255); font-weight: bolder;">
+                      <%= about.heading %>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <ul class="long_text">
+                    <li style="color:  rgb(255, 255, 255);">
+                      <%= about.body %>
+                    </li>
+                  </ul>
                 </div>
               </div>
+              <div style="clear:both;"></div>
             </div>
-
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         </div>
 
         <!-- Add this CSS after the existing styles to make the page responsive -->

@@ -132,15 +132,20 @@ text-decoration: underline;
     }
 
     .carousel-caption {
-      bottom: 5%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      border-radius: 10px;
 
     }
 
     .carousel-caption h2 {
       font-size: 2em;
       color: rgb(0, 0, 0);
-
-      background-color: white;
       border-radius: 10px;
       padding: 5px;
 
@@ -149,7 +154,6 @@ text-decoration: underline;
     .carousel-caption p {
       font-size: 1.5em;
       color: rgb(0, 0, 0);
-      background-color: white;
       border-radius: 10px;
       padding: 5px;
 
@@ -256,6 +260,7 @@ text-decoration: underline;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
+  border-radius: 10px;
 }
 
 .mobile-carousel-caption h2,
@@ -325,6 +330,7 @@ text-decoration: underline;
       <span class="sr-only">Next</span>
     </a>
   </div>
+  
 
   <div id="myCarousel2" class="carousel slide mobile-carousel" data-ride="carousel">
     <ol class="carousel-indicators">

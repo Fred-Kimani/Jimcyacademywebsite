@@ -63,6 +63,12 @@ text-align: center;
 margin-top: 0;
 }
 
+.some-text{
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px ;
+    }
+
 .footer-column a {
 display: block;
 color: white;
@@ -77,6 +83,18 @@ font-weight: bold;
 .footer-column a:hover {
 text-decoration: underline;
 }
+
+.navigators-button2 {
+        margin: 0 10px;
+        /* adjust as needed */
+      }
+
+      .navigators-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        /* adjust as needed */
+      }
 
 /* Desktop Navbar */
 @media (min-width: 768px) {
@@ -93,11 +111,22 @@ text-decoration: underline;
 
     }
 
+    .carousel-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      border-radius: 10px;
+
+    }
+
     .carousel-caption h2 {
       font-size: 2em;
       color: rgb(0, 0, 0);
 
-      background-color: white;
       border-radius: 10px;
       padding: 5px;
 
@@ -106,7 +135,6 @@ text-decoration: underline;
     .carousel-caption p {
       font-size: 1.5em;
       color: rgb(0, 0, 0);
-      background-color: white;
       border-radius: 10px;
       padding: 5px;
 
@@ -355,6 +383,14 @@ text-decoration: underline;
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
+  </div>
+
+  <div class="some-text">
+    <h1 style="font-weight: bold;">Want more information about us?</h1>
+  </div>
+  <div class="navigators-container">
+    
+    <button class="navigators-button2" style="background-color:#3886ed ;"><a href="/admincontacts">Contact us today</a></button>
   </div>
 
   <div style="display: flex; justify-content: center;"><h1 style="font-weight: bold; color: black;">

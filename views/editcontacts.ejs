@@ -78,16 +78,23 @@ color: rgb(0, 204, 255);
 </head>
 <body>
     <div>
-        <form method="post" action="/updatecontacts/<%= contact.id%>">
+        <form method="post" action="/updatecontacts/<%= contact.id%>" enctype="multipart/form-data">
       
           <label for="details">Contact Details</label>
           <input type="text" id="details" name="details" placeholder="Contact Details" value="<%= contact.details%>">
 
           <label for="details">More about this mode of communication</label>
           <input type="text" id="preference" name="preference" placeholder="e.g send a whatsapp message to this number" value="<%= contact.preference%>">
+
+          <div class="form-group">
+            <label for="image">Change Image</label>
+            <input type="file" name="image" class="form-control">
+            <input type="hidden" name="old_image" value="<%= contact.image %>">
+            <img src="/<%= contact.image %>" width="100" class="img-thumbnail mt-1">
+          </div>
       
         
-          <input type="submit" value="Submit">
+          <input type="submit" value="Submit" onclick="return confirm('Save changes?')">
         </form>
       </div>
 

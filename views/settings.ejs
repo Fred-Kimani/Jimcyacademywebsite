@@ -70,8 +70,10 @@
   <body>
     <div class="container">
       <h1>Settings</h1>
+      <button onclick="history.back()">Go Back</button>
       <a href="/accountsettings/password_reset" class="btn-blue">Reset Password</a>
-      <a href="/logout" class="btn-red">Logout</a>
+      <a href="/logout" class="btn-red" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+
     </div>
   </body>
 </html>
