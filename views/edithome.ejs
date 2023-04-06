@@ -117,13 +117,14 @@ label {
       <footer>
         <div class="footer-column">
     
-      <a href="/adminhome">Home</a>
-      <a href="/adminabout"  >About</a>
-      <a href="/admincontacts">Contacts</a>
-      <a href="/users">Add an admin</a>
-      <a href="/manage-users">Manage users</a>
-      <a href="/contact-messages">Messages</a>
-      <a href="/settings">Settings</a>
+          <a href="/adminhome">Home</a>
+          <a href="/adminabout">About</a>
+          <a href="/admincontacts">Contacts</a>
+          <% if (user.role === 'superadmin') { %>
+            <a href="/users">Add an admin</a>
+            <a href="/manage-users" class="active">Manage users</a>
+          <% } %>
+          <a href="/settings">Settings</a>
     </div>
     </footer>
     

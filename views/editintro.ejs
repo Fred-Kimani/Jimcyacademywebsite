@@ -93,7 +93,7 @@ color: rgb(0, 204, 255);
 </head>
 <body>
     <div>
-        <form action="/updateintroduction/<%= introduction.id %>" method="post" enctype="multipart/form-data">
+        <form action="/updateintroduction/<%= introduction.id %>" method="post">
           <label for="heading">Heading</label>
           <input type="text" id="heading" class="form-control" name="heading" placeholder="Heading" value="<%= introduction.heading %>">
       
@@ -113,16 +113,17 @@ color: rgb(0, 204, 255);
 
       <footer>
         <div class="footer-column">
-    
-      <a href="/adminhome">Home</a>
-      <a href="/adminabout"  >About</a>
-      <a href="/admincontacts">Contacts</a>
-      <a href="/users">Add an admin</a>
-      <a href="/manage-users">Manage users</a>
-      <a href="/contact-messages">Messages</a>
-      <a href="/settings">Settings</a>
-    </div>
-    </footer>
+
+          <a href="/adminhome">Home</a>
+          <a href="/adminabout">About</a>
+          <a href="/admincontacts">Contacts</a>
+          <% if (user.role === 'superadmin') { %>
+            <a href="/users">Add an admin</a>
+            <a href="/manage-users" class="active">Manage users</a>
+          <% } %>
+          <a href="/settings">Settings</a>
+          </div>
+          
     
 </body>
 </html>

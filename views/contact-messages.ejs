@@ -24,6 +24,20 @@
   </tbody>
 </table>
 
+<footer>
+  <div class="footer-column">
+
+    <a href="/adminhome">Home</a>
+    <a href="/adminabout">About</a>
+    <a href="/admincontacts">Contacts</a>
+    <% if (user.role === 'superadmin') { %>
+      <a href="/users">Add an admin</a>
+      <a href="/manage-users" class="active">Manage users</a>
+    <% } %>
+    <a href="/settings">Settings</a>
+</div>
+</footer>
+
 <style>
   .messages-table {
     width: 100%;
@@ -44,4 +58,45 @@
   .messages-table tbody tr:hover {
     background-color: #f5f5f5;
   }
+
+    /* Red theme */
+    body {
+      background-color: #ffffff;
+    }
+    h1 {
+      color: #fff;
+    }
+    table {
+      background-color: #fff;
+      border-collapse: collapse;
+      margin: 20px auto;
+      width: 80%;
+    }
+    th {
+      background-color: #c0392b;
+      color: #fff;
+      font-weight: normal;
+      padding: 10px;
+      text-align: left;
+    }
+    td {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+    }
+    form {
+      display: inline-block;
+    }
+    button[type="submit"] {
+      background-color: #c0392b;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 10px;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #e74c3c;
+    }
+ 
 </style>

@@ -223,12 +223,11 @@
 <body>
 
   <!-- banner section start -->
-  <% if (typeof updateSuccess !=='undefined' && updateSuccess !==null) { %>
-    <div class="alert alert-success">
-      <%= updateSuccess %>
-    </div>
-    <% updateSuccess=null; %>
-      <% } %>
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger" style="color: rgb(187, 13, 13);"><%= error %></div>
+  <% } else if (typeof success !== 'undefined' && success) { %>
+    <p style="color: green;"><%= success %></p>
+  <% } %>
 
 
 
@@ -316,16 +315,17 @@
 
         <footer>
           <div class="footer-column">
-            <h3>Admin</h3>
-            <a class="active" href="/adminhome">Home</a>
+
+            <a href="/adminhome" class="active">Home</a>
             <a href="/adminabout">About</a>
             <a href="/admincontacts">Contacts</a>
-            <a href="/users">Add an admin</a>
-            <a href="/manage-users">Manage users</a>
-            <a href="/contact-messages">Messages</a>
+            <% if (user.role === 'superadmin') { %>
+              <a href="/users">Add an admin</a>
+              <a href="/manage-users">Manage users</a>
+            <% } %>
             <a href="/settings">Settings</a>
-
-          </div>
+            </div>
+            
         </footer>
 
 

@@ -9,7 +9,7 @@
   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- site metas -->
-  <title>Jimcy Academy</title>
+  <title>About Jimcy</title>
   <link rel="icon" href="/images/logoacad.png">
 
   <meta name="keywords" content="">
@@ -285,14 +285,24 @@ text-decoration: underline;
 
 <body>
 
+  <% if (typeof successMsg !== 'undefined' && successMsg !== null) { %>
+    <div class="alert alert-success"><%= successMsg %></div>
+  <% } %>
+  <% if (typeof errorMsg !== 'undefined' && errorMsg !== null) { %>
+    <div class="alert alert-danger"><%= errorMsg %></div>
+  <% } %>
+  
+  
+
   <div class="topnav">
     <img src="/images/logoacad.png" style="width:100px;height:90px;">
     <a href="/adminhome">Home</a>
-    <a href="/adminabout" class="active">About</a>
-    <a href="/admincontacts">Contacts</a>
-    <a href="/add-about">Add Info</a>
-    <a href="/users">Add an admin</a>
-    <a href="/manage-users">Manage users</a>
+            <a href="/adminabout" class="active">About</a>
+            <a href="/admincontacts">Contacts</a>
+            <% if (user.role === 'superadmin') { %>
+              <a href="/users">Add an admin</a>
+              <a href="/manage-users" >Manage users</a>
+            <% } %>
     <a href="/contact-messages">Messages</a>
     <a href="/settings">Settings</a>
   </div>
@@ -304,13 +314,14 @@ text-decoration: underline;
     </a>
     <div id="myLinks">
       <a href="/adminhome">Home</a>
-      <a href="/adminabout" class="active">About</a>
-      <a href="/admincontacts">Contacts</a>
-      <a href="/add-about">Add Info</a>
-      <a href="/users">Add an admin</a>
-      <a href="/manage-users">Manage users</a>
-      <a href="/contact-messages">Messages</a>
-      <a href="/settings">Settings</a>
+            <a href="/adminabout" class="active">About</a>
+            <a href="/admincontacts">Contacts</a>
+            <% if (user.role === 'superadmin') { %>
+              <a href="/users">Add an admin</a>
+              <a href="/manage-users">Manage users</a>
+            <% } %>
+    <a href="/contact-messages">Messages</a>
+    <a href="/settings">Settings</a>
     </div>
   </div>
   
@@ -414,14 +425,14 @@ text-decoration: underline;
 
     <footer>
       <div class="footer-column">
-
-    <a href="/adminhome">Home</a>
-    <a href="/adminabout" class="active" >About</a>
-    <a href="/admincontacts">Contacts</a>
-    <a href="/users">Add an admin</a>
-    <a href="/manage-users">Manage users</a>
-    <a href="/contact-messages">Messages</a>
-    <a href="/settings">Settings</a>
+        <a href="/adminhome">Home</a>
+        <a href="/adminabout" class="active">About</a>
+        <a href="/admincontacts">Contacts</a>
+        <% if (user.role === 'superadmin') { %>
+          <a href="/users">Add an admin</a>
+          <a href="/manage-users" >Manage users</a>
+        <% } %>
+        <a href="/settings">Settings</a>
   </div>
 </footer>
 

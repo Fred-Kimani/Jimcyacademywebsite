@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).render('error', { message: 'Internal server error' });
+  res.status(500).render('error', { message: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists." });
 });
 
 
@@ -129,7 +129,7 @@ app.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       res.sendStatus(500);
-      return ({ error: 'An error occurred while processing your request. Please try again later.' });
+      return ({ error: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists."});
     } else {
       res.render("login", { success: "You are successfully logged out" });
     }
@@ -143,7 +143,9 @@ app.get("/logout", (req, res) => {
 
 
 app.get('/users',ensureAuthenticated, async(req,res)=>{
-  res.render('createuser');
+  const user = req.user;
+  const successMsg = req.flash('successMsg');
+  res.render('createuser', {user,  successMsg });
 });
 
 app.post('/users', ensureAuthenticated, async(req, res) => {
@@ -200,7 +202,7 @@ app.post('/users', ensureAuthenticated, async(req, res) => {
             res.status(201).redirect('/adminhome');
           })
           .catch((error) => {
-            res.status(500).send('Internal server error');
+            res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
           });
       }
     } catch (err) {
@@ -215,64 +217,72 @@ app.post('/users', ensureAuthenticated, async(req, res) => {
 // Home page
 app.get('/adminhome',ensureAuthenticated, async (req, res) => {
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  const user = req.user;
+  const successMsg = req.flash('successMsg');
   try {
-    const querys = 'SELECT * FROM about';
-    const query_two = 'SELECT * from introduction';
+    const aboutQuery = 'SELECT * FROM about';
+    const introQuery = 'SELECT * from introduction';
     const locationDetails = 'SELECT location FROM schoolDetails';
     const [location ]= await query(locationDetails);
-    const [about ]= await query(querys);
-    const [introduction] = await query(query_two);
+    const [about ]= await query(aboutQuery);
+    const [introduction] = await query(introQuery);
     res.locals.googleMapsApiKey = googleMapsApiKey;
     const updateSuccess = req.session.updateSuccess;
     req.session.updateSuccess = null;
-    res.render('home', { about:about, location: location.location , success: updateSuccess, introduction:introduction });
+    res.render('home', { about:about, location: location.location , success: updateSuccess, introduction:introduction, user, successMsg });
 
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
 app.get('/adminabout',ensureAuthenticated, async(req, res)=>{
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  const user = req.user;
+  const successMsg = req.flash('successMsg');
   try{
     const locationDetails = 'SELECT location FROM schoolDetails';
     const [location ]= await query(locationDetails);
     const querys =  "SELECT * FROM informationCards";
     const card = await query(querys);
     res.locals.googleMapsApiKey = googleMapsApiKey;
-    res.render('about', {card, location: location.location })
+    res.render('about', {card, location: location.location, user, successMsg })
   }
   catch (err) {
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
   }
 });
 
 app.get('/admincontacts',ensureAuthenticated,async(req, res)=>{
   const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
+  const user = req.user;
   res.locals.googleMapsApiKey = googleMapsApiKey;
+  const successMsg = req.flash('successMsg');
   try{
     const locationDetails = 'SELECT location FROM schoolDetails';
     const [location ]= await query(locationDetails);
     const querys =  "SELECT * FROM ContactDetails"
     const contact = await query(querys);
     res.locals.googleMapsApiKey = googleMapsApiKey;
-    res.render('contacts', {contact, location: location.location })
+    res.render('contacts', {contact, location: location.location, user, successMsg })
   }
   catch (err) {
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
   }
 });
 
 app.get('/manage-users', ensureAuthenticated, async (req, res) => {
   const currentUserId = req.user.id;
+  const successMsg = req.flash('successMsg');
+  const user = req.user;
   const querys = `SELECT * FROM users WHERE id != ${currentUserId}`;
   const users = await query(querys);
-  res.render('users', { users: users });
+  res.render('users', { users: users, user, successMsg });
 });
 
 
@@ -282,10 +292,11 @@ app.post('/delete-user/:id',ensureAuthenticated, async(req, res)=>{
     const id = req.params.id;
     const querys = 'DELETE FROM users where id=?'
     await query(querys,[id]);
+    req.flash('successMsg', 'User deleted successfully!');
     res.redirect('/manage-users')
   } catch (err) {
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -294,44 +305,48 @@ app.post('/delete-user/:id',ensureAuthenticated, async(req, res)=>{
  
 app.get('/edithome/:id', ensureAuthenticated, upload,async(req,res,next)=>{
   var id = req.params.id;
+  const user = req.user;
+  
   try{
     const querys =  "SELECT * FROM about WHERE id= ?";
     const [about]= await query(querys, [id]);
-    res.render('edithome', {about:about})
+    res.render('edithome', {about:about, user})
 
   } catch (err){
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
   
 });
 
 app.get('/editintroduction/:id', ensureAuthenticated, upload, async(req, res, next)=>{
   var id = req.params.id;
+  const user = req.user;
   try{
     const querys =  "SELECT * FROM introduction WHERE id= ?";
     const [introduction]= await query(querys, [id]);
-    res.render('editintro', {introduction:introduction});
+    res.render('editintro', {introduction:introduction, user});
 
 
   } catch(err){
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
   }
 });
 
 app.get('/editcontacts/:id', ensureAuthenticated, async(req,res)=>{
   var id = req.params.id;
+  const user = req.user;
 
   try{
     const querys = "SELECT * FROM ContactDetails WHERE id= ?"
     const [contact] = await query(querys, [id]);
-    res.render('editcontacts', {contact:contact})
+    res.render('editcontacts', {contact:contact, user})
 
 
   } catch (err){
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
   }
 })
@@ -339,14 +354,15 @@ app.get('/editcontacts/:id', ensureAuthenticated, async(req,res)=>{
 app.get('/editabout/:id' , upload, ensureAuthenticated, async(req,res)=>{
   try{
     var id = req.params.id;
+    const user = req.user;
     const querys =  "SELECT * FROM informationCards WHERE id= ?";
     const [card] = await query(querys, [id]);
-    res.render('editabout', {card:card})
+    res.render('editabout', {card:card, user})
     
 
   } catch (err){
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 
 })
@@ -379,10 +395,13 @@ app.post('/updatehome/:id', upload, ensureAuthenticated,  async(req, res) => {
   try {
     const querys = 'UPDATE about SET heading=?, body=?, image=? WHERE id=?';
     await query(querys, [heading, body, newImage, id]);
+    req.flash('successMsg', 'Information updated successfully!');
+
+    // Redirect to the desired page
     res.redirect('/adminhome');
   } catch (err) {
     console.log(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -392,12 +411,12 @@ app.post('/updateintroduction/:id',  ensureAuthenticated,  async(req, res) => {
 
 
   try {
-    const querys = 'UPDATE introduction SET heading=?, body=?, image=? WHERE id=?';
-    await query(querys, [heading, body, newImage, id]);
+    const querys = 'UPDATE introduction SET heading=?, body=? WHERE id=?';
+    await query(querys, [heading, body, id]);
     res.redirect('/adminhome');
   } catch (err) {
     console.log(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -432,10 +451,13 @@ app.post('/updateabout/:id', upload, ensureAuthenticated, async(req,res)=>{
     try{
       const querys = 'UPDATE informationCards SET heading = ?, body=?, image= ? WHERE id=?';
       await query(querys, [heading,body,newImage,id]);
-      res.redirect('/adminabout');
+      req.flash('successMsg', 'Information updated successfully!');
+
+      
+    res.redirect('/adminabout');
     } catch(err){
       console.log(err)
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
     }
 });
@@ -463,14 +485,12 @@ app.post('/updatecontacts/:id', upload, ensureAuthenticated, async (req, res) =>
       fs.unlinkSync(`./images/${req.body.old_image}`);
     }
 
-    req.session.message = {
-      type: 'success',
-      message: 'Contact details updated successfully!',
-    };
+
+
     res.redirect('/admincontacts');
   } catch (err) {
     console.log(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -481,17 +501,20 @@ app.delete('/deleteabout/:id',ensureAuthenticated, async (req, res) => {
   try {
     const querys = 'DELETE FROM informationCards WHERE id=?';
     await query(querys, [id]);
+    
     res.status(200).send('Successfully deleted item.');
   } catch (err) {
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
 
 app.get('/add-about', ensureAuthenticated, async(req,res)=>{
+  const user = req.user;
 
-  res.render('addinfocard')
+
+  res.render('addinfocard', {user})
 
 });
 
@@ -503,17 +526,14 @@ app.post('/addabout', upload, ensureAuthenticated, async(req,res)=>{
   try{
     const querys = 'INSERT INTO  informationCards (heading, body, image) VALUES (?,?,?)';
     await query(querys, [heading,body,image])
-    req.session.message = {
-      type: "success",
-      message: "Added successfully!",
-    };
 
+    req.flash('successMsg', 'Information posted successfully');
     res.redirect('/adminabout');
 
 
   } catch(err){
     console.log(err)
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -526,22 +546,25 @@ app.post('/contactus', async (req, res) => {
     const querys = 'INSERT INTO messages (name, contact, message) VALUES (?, ?, ?)';
     await query(querys, [name, contact, message]);
     req.flash('successMsg', 'Message sent successfully');
-    res.redirect('/contacts');
+    res.render('contacts');
   } catch (err) {
     req.flash('errorMsg', 'Error sending message');
-      res.redirect('/contacts');
+    res.render('contacts');
   }
 });
 
+
 app.get('/contact-messages',ensureAuthenticated ,async (req, res) => {
   try {
+    const successMsg = req.flash('successMsg');
+    const user = req.user;
     const querys = 'SELECT * FROM messages';
     const messages = await query(querys);
 
-    res.render('contact-messages.ejs', { messages });
+    res.render('contact-messages.ejs', { messages, user, successMsg });
   } catch (err) {
     console.log(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   }
 });
 
@@ -551,11 +574,13 @@ app.post('/delete-message/:id', ensureAuthenticated, async(req, res) => {
   const id = req.params.id;
   const deleteQuery = 'DELETE FROM messages WHERE id=?';
   await query(deleteQuery , [id]);
+  req.flash('successMsg', 'Message deleted!');
+
   res.redirect('/contact-messages')
 
   }catch(err){
     console.log(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
 
   }
 });

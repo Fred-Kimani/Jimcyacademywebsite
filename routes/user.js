@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
   
     } catch (err) {
       console.error(err);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
     }
   });
   
@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
     }
     catch (err) {
       console.log(err)
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   
     }
   });
@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
     }
     catch (err) {
       console.log(err)
-      res.status(500).send('Internal Server Error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
   
     }
   });

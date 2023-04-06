@@ -45,7 +45,7 @@ router.get('/password_reset/:token', async (req, res) => {
       }
     } catch(err) {
       console.log(err);
-      res.status(500).send('Internal server error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
     }
   });
   
@@ -81,7 +81,7 @@ router.get('/password_reset/:token', async (req, res) => {
       }
     } catch(err) {
       console.log(err);
-      res.status(500).send('Internal server error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
     }
   });
   
@@ -137,7 +137,7 @@ router.post('/password_reset', async(req, res) => {
   
     } catch(err){
       console.log(err);
-      res.status(500).send('Internal server error');
+      res.status(500).send("Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists.");
     }
   });
 

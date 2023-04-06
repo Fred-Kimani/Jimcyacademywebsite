@@ -30,7 +30,7 @@ module.exports = function(passport) {
         }
       });
     } catch(err) {
-      return done(null, false, { error: 'An error occurred while processing your request. Please try again later.' });
+      return done(null, false, { error: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists." });
     }
   }));
 
@@ -50,7 +50,7 @@ module.exports = function(passport) {
         const user = rows[0];
         done(null, user);
       } catch(err) {
-        return done(null, false, { error: 'An error occurred while processing your request. Please try again later.' });
+        return done(null, false, { error: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists." });
       }
     }
     })
